@@ -1,5 +1,4 @@
 ---
-import favicon from "../img/favicon1.png";
 ---
 
 <!doctype html>
@@ -7,11 +6,20 @@ import favicon from "../img/favicon1.png";
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href={favicon.src} />
+		<link rel="icon" type="image/png" href="/img/favicon1.png" />
 		<title>gap_system</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css">
 	</head>
-	<body>
-		<slot />
+	<body class="relative min-h-screen overflow-x-hidden bg-white text-slate-900">
+		<div class="pointer-events-none fixed inset-0 -z-0 overflow-hidden" aria-hidden="true">
+			<div class="absolute -left-32 -top-40 h-[34rem] w-[34rem] rounded-full bg-blue-700/35 blur-[120px]"></div>
+			<div class="absolute right-[-10rem] top-1/4 h-[30rem] w-[30rem] rounded-full bg-sky-400/25 blur-[110px]"></div>
+			<div class="absolute bottom-[-12rem] left-1/3 h-[32rem] w-[32rem] rounded-full bg-cyan-500/20 blur-[130px]"></div>
+			<div class="absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-blue-500/20 blur-[100px]"></div>
+		</div>
+		<div class="relative z-10">
+			<slot />
+		</div>
 	</body>
 </html>
 
@@ -24,5 +32,6 @@ import favicon from "../img/favicon1.png";
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
+		font-family: "Onest",sans-serif;
 	}
 </style>
