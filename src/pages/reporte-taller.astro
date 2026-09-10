@@ -1,0 +1,93 @@
+---
+import "../styles/global.css";
+import Layout from '../layouts/Layout.astro';
+import Menu from '../components/menu.astro';
+---
+
+<Layout>
+    <div class="app-shell">
+        <Menu></Menu>
+        <main class="dashboard" id="reporte-taller">
+            <header class="topbar">
+                <div class="breadcrumb"><span class="status-dot"></span> Panel de control <span>/</span> Reporte por taller</div>
+                <a class="back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
+            </header>
+
+            <section class="welcome-panel" aria-labelledby="report-title">
+                <div>
+                    <p class="eyebrow">CAPACIDAD Y SEGUIMIENTO</p>
+                    <h1 id="report-title">Reporte por taller</h1>
+                    <p class="muted">Consulta la carga de trabajo, capacidad y responsables de cada taller.</p>
+                </div>
+                <div class="welcome-mark" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            </section>
+
+            <section class="surface report-panel">
+                <div class="section-heading"><div><p class="eyebrow">DIRECTORIO</p><h2>Perfiles de talleres</h2></div><button class="primary-button" id="new-workshop-button" type="button"><i class="fa-solid fa-plus"></i> Crear perfil de taller</button></div>
+                <div class="workshop-grid" id="workshop-grid"><div class="report-empty"><i class="fa-solid fa-screwdriver-wrench"></i><p>Aún no hay perfiles de talleres.</p><span>Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div></div>
+            </section>
+        </main>
+    </div>
+
+    <dialog class="workshop-dialog" id="workshop-dialog" aria-labelledby="workshop-dialog-title">
+        <form class="order-form" id="workshop-form">
+            <div class="dialog-heading"><div><p class="eyebrow">DIRECTORIO DE TALLERES</p><h2 id="workshop-dialog-title">Perfil de taller</h2></div><button class="close-dialog" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="form-grid">
+                <label>Nombre del taller <input name="name" required placeholder="Ej. Confecciones Norte" /></label>
+                <label>Responsable <input name="contact" required placeholder="Nombre del responsable" /></label>
+                <label>Tipo de taller <select name="type" required><option value="">Selecciona una opción</option><option>Propio</option><option>Externo</option></select></label>
+                <label>Especialidad <input name="specialty" required placeholder="Ej. Confección y acabados" /></label>
+                <label>Teléfono <input name="phone" placeholder="Número de contacto" /></label>
+                <label>Capacidad mensual <input name="capacity" type="number" min="1" required placeholder="Unidades" /></label>
+            </div>
+            <div class="dialog-actions"><button class="secondary-button close-dialog" type="button">Cancelar</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i> Guardar perfil</button></div>
+        </form>
+    </dialog>
+</Layout>
+
+<script>
+    const workshopDialog = document.querySelector('#workshop-dialog');
+    const workshopForm = document.querySelector('#workshop-form');
+    const workshopGrid = document.querySelector('#workshop-grid');
+    const workshops = () => JSON.parse(localStorage.getItem('workshops') || '[]');
+    const orders = () => JSON.parse(localStorage.getItem('productionOrders') || '[]');
+
+    const renderWorkshops = () => {
+        const workshopList = workshops();
+        workshopGrid.innerHTML = workshopList.length ? workshopList.map((workshop) => {
+            const assignedOrders = orders().filter((order) => order.workshopId === workshop.id);
+            const units = assignedOrders.reduce((total, order) => total + Number(order.quantity || 0), 0);
+            return `<article class="workshop-card"><div class="workshop-card-heading"><span class="workshop-icon"><i class="fa-solid fa-industry"></i></span><span class="workshop-type">${workshop.type}</span></div><h3>${workshop.name}</h3><p>${workshop.specialty}</p><div class="workshop-details"><span><i class="fa-solid fa-user"></i> ${workshop.contact}</span><span><i class="fa-solid fa-phone"></i> ${workshop.phone || 'Sin teléfono'}</span></div><div class="workshop-load"><div><strong>${assignedOrders.length}</strong><span>órdenes asignadas</span></div><div><strong>${units}</strong><span>prendas</span></div><div><strong>${workshop.capacity}</strong><span>capacidad mensual</span></div></div></article>`;
+        }).join('') : '<div class="report-empty"><i class="fa-solid fa-screwdriver-wrench"></i><p>Aún no hay perfiles de talleres.</p><span>Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div>';
+    };
+
+    document.querySelector('#new-workshop-button')?.addEventListener('click', () => workshopDialog?.showModal());
+    document.querySelectorAll('.close-dialog').forEach((button) => button.addEventListener('click', () => workshopDialog?.close()));
+    workshopForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const profile = { ...Object.fromEntries(new FormData(workshopForm).entries()), id: `workshop-${Date.now()}` };
+        localStorage.setItem('workshops', JSON.stringify([...workshops(), profile]));
+        renderWorkshops();
+        workshopDialog?.close();
+        workshopForm.reset();
+    });
+
+    renderWorkshops();
+</script>
+
+<style>
+    :global(*) { box-sizing: border-box; }
+    .app-shell { display: flex; min-height: 100vh; color: #102f56; }
+    .dashboard { flex: 1; min-width: 0; padding: 30px 38px 50px; background: #eaf2fb; }
+    .topbar, .breadcrumb { display: flex; align-items: center; }
+    .topbar { justify-content: space-between; margin-bottom: 26px; color: #4e6b8c; font-size: 13px; }
+    .breadcrumb { gap: 8px; } .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #13ad78; box-shadow: 0 0 0 4px #c8f3e3; } .back-link { color: #075fbd; font-size: 13px; font-weight: 700; text-decoration: none; } .back-link i { margin-right: 6px; }
+    .welcome-panel { position: relative; display: flex; justify-content: space-between; min-height: 164px; overflow: hidden; padding: 34px 40px; border: 1px solid #b9d4ef; border-radius: 10px; background: linear-gradient(105deg, #fff 0%, #fff 48%, #cce5ff 100%); box-shadow: 0 9px 25px #6e9ac933; } .welcome-panel::after { position: absolute; right: 52px; top: -85px; width: 310px; height: 260px; border: 25px solid #91c5f5; border-radius: 50%; content: ""; opacity: .7; transform: rotate(-22deg); } .welcome-mark { z-index: 1; align-self: center; display: grid; width: 66px; height: 66px; margin-right: 78px; place-items: center; border-radius: 9px; background: #0c70d4; color: white; font-size: 28px; box-shadow: 0 12px 22px #0a5bb65e; transform: rotate(-7deg); }
+    .eyebrow { margin: 0 0 7px; color: #1765ad; font-size: 10px; font-weight: 800; letter-spacing: .08em; } h1, h2, h3, p { margin-top: 0; } h1 { margin-bottom: 7px; color: #102f56; font-size: clamp(24px, 2.3vw, 32px); } h2 { margin-bottom: 0; font-size: 17px; } .muted { margin: 0; color: #4e6b8c; font-size: 12px; }
+    .surface { margin-top: 18px; padding: 25px; border: 1px solid #c2d6ea; border-radius: 9px; background: #fff; box-shadow: 0 6px 18px #517da31f; } .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .primary-button { padding: 14px 19px; border: 0; border-radius: 8px; background: #075fbd; color: #fff; font: inherit; font-size: 14px; cursor: pointer; box-shadow: 0 6px 14px #075fbd45; } .primary-button i { margin-right: 9px; }
+    .workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 14px; } .workshop-card { padding: 19px; border: 1px solid #abc7e2; border-radius: 8px; background: #f5faff; } .workshop-card-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; } .workshop-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 8px; background: #bcdcff; color: #075fbd; font-size: 16px; } .workshop-type { padding: 5px 8px; border-radius: 5px; background: #d7f4e8; color: #087c58; font-size: 10px; font-weight: 800; text-transform: uppercase; } .workshop-card h3 { margin-bottom: 5px; color: #102f56; font-size: 16px; } .workshop-card > p { margin-bottom: 14px; color: #315b87; font-size: 12px; } .workshop-details { display: grid; gap: 6px; padding: 12px 0; border-top: 1px solid #d6e5f3; border-bottom: 1px solid #d6e5f3; color: #587493; font-size: 11px; } .workshop-details i { width: 14px; color: #0865c9; } .workshop-load { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; } .workshop-load div { display: flex; flex-direction: column; gap: 3px; } .workshop-load strong { color: #075fbd; font-size: 18px; } .workshop-load span { color: #587493; font-size: 10px; line-height: 1.2; }
+    .report-empty { grid-column: 1 / -1; padding: 30px; border: 1px dashed #abc7e2; border-radius: 8px; background: #f5faff; color: #587493; text-align: center; } .report-empty i { margin-bottom: 10px; color: #0b70d4; font-size: 28px; } .report-empty p { margin-bottom: 5px; color: #315b87; font-size: 14px; font-weight: 700; } .report-empty span { font-size: 12px; }
+    .workshop-dialog { position: fixed; inset: 50% auto auto 50%; width: min(720px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 12px; box-shadow: 0 25px 80px #18345d59; transform: translate(-50%, -50%); } .workshop-dialog::backdrop { background: #092748a6; backdrop-filter: blur(4px); } .order-form { padding: 28px; } .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; } .dialog-heading h2 { font-size: 21px; } .close-dialog { border: 0; background: transparent; color: #315b87; font-size: 18px; cursor: pointer; } .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; } .form-grid label { display: flex; flex-direction: column; gap: 7px; color: #315b87; font-size: 12px; font-weight: 700; } .form-grid input, .form-grid select { width: 100%; padding: 11px 12px; border: 1px solid #abc7e2; border-radius: 6px; outline-color: #0b70d4; color: #102f56; font: inherit; font-size: 13px; } .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; } .secondary-button { padding: 12px 17px; border: 1px solid #abc7e2; border-radius: 8px; background: white; color: #315b87; font: inherit; cursor: pointer; }
+    @media (max-width: 780px) { .app-shell { display: block; } .dashboard { padding: 20px 14px 30px; } .welcome-mark { display: none; } } @media (max-width: 620px) { .form-grid { grid-template-columns: 1fr; } .section-heading { align-items: flex-start; gap: 15px; flex-direction: column; } .order-form { padding: 22px 18px; } }
+</style>
