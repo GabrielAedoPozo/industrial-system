@@ -86,8 +86,9 @@ import Menu from '../components/menu.astro';
                 <button class="close-dialog" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="form-grid">
-                <label>Orden de Producción <input name="orderNumber" required placeholder="Ej. OP-2026-001" /></label>
-                <label>Tipo de Prenda <input name="garmentType" required placeholder="Ej. Camisa" /></label>
+                <label>Orden de Producción <input name="orderNumber" id="order-number" readonly required placeholder="Selecciona una prenda" /></label>
+                <label>Tipo de Prenda <select name="garmentType" id="garment-type" required><option value="">Selecciona una prenda</option><option>Camisa</option><option>Blusa</option><option>Pantalón</option><option>Casacas</option><option>Short</option><option>Bermuda</option><option>T shirt</option><option>Polo box</option></select></label>
+                <label>Género <select name="gender" id="garment-gender" required><option value="">Selecciona un género</option><option>Mujer</option><option>Hombre</option></select></label>
                 <label>Tipo de tela <input name="fabricType" required placeholder="Ej. Denim, algodón" /></label>
                 <label>Composición <input name="composition" required placeholder="Ej. 98% algodón, 2% elastano" /></label>
                 <label>Modelo <input name="model" required placeholder="Nombre o referencia" /></label>
@@ -118,6 +119,9 @@ import Menu from '../components/menu.astro';
     const form = document.querySelector('#order-form');
     const workshopSelect = document.querySelector('#workshop-select');
     const washField = document.querySelector('.wash-field');
+    const garmentType = document.querySelector('#garment-type');
+    const garmentGender = document.querySelector('#garment-gender');
+    const orderNumber = document.querySelector('#order-number');
     const fabricInput = form?.elements.namedItem('fabricType');
     const emptyTable = document.querySelector('.empty-table');
     const ordersCount = document.querySelector('.metric-card strong');
@@ -127,15 +131,26 @@ import Menu from '../components/menu.astro';
         const assignedWorkshop = workshops().find((workshop) => workshop.id === order.workshopId);
         if (emptyTable) {
             emptyTable.classList.add('has-order');
-            emptyTable.innerHTML = `<div class="order-summary"><div><span class="order-id">${order.orderNumber}</span><h3>${order.garmentType} · ${order.model}</h3><p>${order.fabricType} · ${order.quantity} unidades · Curva: ${order.curve}</p></div><span class="order-status">${status}/3 etapas</span></div><div class="order-progress"><span style="width: ${(status / 3) * 100}%"></span></div><div class="order-meta"><span><i class="fa-solid fa-industry"></i> Taller: ${assignedWorkshop?.name || 'No asignado'}</span><span><i class="fa-solid fa-ruler-horizontal"></i> ${order.fabricWidth}</span><span><i class="fa-solid fa-layer-group"></i> ${order.composition}</span><span><i class="fa-solid fa-scissors"></i> Rizado: ${order.gathering || 'Pendiente'}</span></div>`;
+            emptyTable.innerHTML = `<div class="order-summary"><div><span class="order-id">${order.orderNumber}</span><h3>${order.garmentType} · ${order.model}</h3><p>${order.fabricType} · ${order.quantity} unidades · Curva: ${order.curve}</p></div><span class="order-status">${status}/3 etapas</span></div><div class="order-progress"><span style="width: ${(status / 3) * 100}%"></span></div><div class="order-meta"><span><i class="fa-solid fa-industry"></i> Taller: ${assignedWorkshop?.name || 'No asignado'}</span><span><i class="fa-solid fa-venus-mars"></i> Género: ${order.gender || 'Sin definir'}</span><span><i class="fa-solid fa-ruler-horizontal"></i> ${order.fabricWidth}</span><span><i class="fa-solid fa-layer-group"></i> ${order.composition}</span><span><i class="fa-solid fa-scissors"></i> Rizado: ${order.gathering || 'Pendiente'}</span></div>`;
         }
         if (ordersCount) ordersCount.textContent = '1';
     };
 
     const workshops = () => JSON.parse(localStorage.getItem('workshops') || '[]');
     const orders = () => JSON.parse(localStorage.getItem('productionOrders') || '[]');
+    const garmentPrefixes = { Camisa: 'CAM', Blusa: 'BLU', 'Pantalón': 'PAN', Casacas: 'CAS', Short: 'SHO', Bermuda: 'BER', 'T shirt': 'TSH', 'Polo box': 'POB' };
+    const nextOrderNumber = (garment) => {
+        const prefix = garmentPrefixes[garment];
+        if (!prefix) return '';
+        const highestNumber = orders().reduce((highest, order) => {
+            const match = String(order.orderNumber || '').match(new RegExp(`^${prefix}-(\\d+)$`));
+            return match ? Math.max(highest, Number(match[1])) : highest;
+        }, 0);
+        return `${prefix}-${String(highestNumber + 1).padStart(3, '0')}`;
+    };
     const openDialog = () => {
         populateWorkshopSelect();
+        orderNumber.value = nextOrderNumber(garmentType.value);
         dialog?.showModal();
     };
     const populateWorkshopSelect = () => {
@@ -147,6 +162,14 @@ import Menu from '../components/menu.astro';
         const isDenim = event.target.value.toLowerCase().includes('denim');
         washField?.classList.toggle('is-hidden', !isDenim);
         washField?.querySelector('input').toggleAttribute('required', isDenim);
+    });
+    garmentType?.addEventListener('change', () => {
+        orderNumber.value = nextOrderNumber(garmentType.value);
+        if (garmentType.value === 'Blusa') {
+            garmentGender.value = 'Mujer';
+        } else if (garmentGender.value === 'Mujer' && garmentType.value) {
+            garmentGender.value = '';
+        }
     });
     form?.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -195,5 +218,25 @@ import Menu from '../components/menu.astro';
     @media (max-width: 1220px) { .metric-grid { grid-template-columns: repeat(3, 1fr); } .content-grid { grid-template-columns: 1fr; } .side-stack { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 780px) { .app-shell { display: block; } .dashboard { padding: 20px 14px 30px; } .metric-grid, .bottom-grid { grid-template-columns: 1fr 1fr; } .side-stack { grid-template-columns: 1fr; } .orders-panel { grid-column: 1 / -1; } .welcome-mark { display: none; } }
     @media (max-width: 520px) { .metric-grid, .bottom-grid, .side-stack { grid-template-columns: 1fr; } .topbar { align-items: flex-start; } .profile > div:last-of-type { display: none; } .welcome-panel { padding: 22px; } }
+    .form-grid select { width: 100%; padding: 11px 12px; border: 1px solid #abc7e2; border-radius: 6px; outline-color: #0b70d4; color: #102f56; background: #fff; font: inherit; font-size: 13px; }
     @media (max-width: 620px) { .form-grid, .tracking-grid { grid-template-columns: 1fr; } .order-form { padding: 22px 18px; } }
+</style>
+
+<style is:global>
+    body:has(#order-dialog) .empty-table.has-order { display: block; min-height: 315px; padding: 26px; border: 1px solid #c8d6e8; border-radius: 10px; background: #fff; color: #102548; text-align: left; box-shadow: 0 8px 20px #10254812; }
+    body:has(#order-dialog) .empty-table.has-order .order-summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    body:has(#order-dialog) .empty-table.has-order .order-id { display: inline-block; margin-bottom: 8px; color: #075fbd; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+    body:has(#order-dialog) .empty-table.has-order .order-summary h3 { margin: 0 0 7px; color: #102548; font-size: 20px; line-height: 1.2; }
+    body:has(#order-dialog) .empty-table.has-order .order-summary p { margin: 0; color: #5a6f8d; font-size: 13px; }
+    body:has(#order-dialog) .empty-table.has-order .order-status { flex: 0 0 auto; padding: 8px 11px; border-radius: 6px; background: #e3effc; color: #075fbd; font-size: 12px; font-weight: 800; white-space: nowrap; }
+    body:has(#order-dialog) .empty-table.has-order .order-progress { height: 8px; margin: 25px 0 22px; overflow: hidden; border-radius: 8px; background: #e5ebf3; }
+    body:has(#order-dialog) .empty-table.has-order .order-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #075fbd, #16a878); }
+    body:has(#order-dialog) .empty-table.has-order .order-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; padding-top: 18px; border-top: 1px solid #e0e7f0; color: #526985; font-size: 12px; }
+    body:has(#order-dialog) .empty-table.has-order .order-meta span { display: flex; align-items: center; min-width: 0; gap: 7px; }
+    body:has(#order-dialog) .empty-table.has-order .order-meta i { width: 16px; flex: 0 0 16px; color: #075fbd; text-align: center; }
+    @media (max-width: 620px) {
+        body:has(#order-dialog) .empty-table.has-order { padding: 20px; }
+        body:has(#order-dialog) .empty-table.has-order .order-summary { gap: 14px; flex-direction: column; }
+        body:has(#order-dialog) .empty-table.has-order .order-meta { grid-template-columns: 1fr; }
+    }
 </style>
