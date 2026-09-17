@@ -1,242 +1,60 @@
 ---
 import "../styles/global.css";
-import Layout from '../layouts/Layout.astro';
-import Menu from '../components/menu.astro';
+import Layout from "../layouts/Layout.astro";
+import Menu from "../components/menu.astro";
 ---
 
 <Layout>
-    <div class="app-shell">
-        <Menu></Menu>
-
-        <main class="dashboard" id="inicio">
-            <header class="topbar">
-                <div class="breadcrumb"><span class="status-dot"></span> Panel de control <span>/</span> Inicio</div>
-                <div class="topbar-actions">
-                    <button class="icon-button" type="button" aria-label="Notificaciones">
-                        <i class="fa-regular fa-bell" aria-hidden="true"></i>
-                        <span class="notification-dot"></span>
-                    </button>
-                    <div class="profile">
-                        <div class="avatar">G</div>
-                        <div><strong>Gabriel</strong><span>Administrador</span></div>
-                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
-                    </div>
-                </div>
+    <div class="flex min-h-screen text-slate-900">
+        <Menu />
+        <main class="min-w-0 flex-1 bg-blue-50 p-8 pb-12" id="inicio">
+            <header class="mb-7 flex items-center justify-between text-sm text-slate-500">
+                <div class="flex items-center gap-2"><span class="size-2 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></span> Panel de control <span class="text-slate-400">/</span> Inicio</div>
+                
             </header>
 
-            <section class="welcome-panel" aria-labelledby="dashboard-title">
-                <div>
-                    <p class="eyebrow">BIENVENIDO, GABRIEL</p>
-                    <h1 id="dashboard-title">Resumen de la producción</h1>
-                    <p class="muted">Aquí tienes una vista general del estado de tus órdenes, talleres y producción.</p>
-                </div>
-                <div class="welcome-mark" aria-hidden="true"><i class="fa-solid fa-chart-simple"></i></div>
+            <section class="relative flex min-h-40 justify-between overflow-hidden rounded-xl border border-blue-200 bg-linear-to-br from-white via-white to-blue-100 px-10 py-8 shadow-lg shadow-blue-900/10" aria-labelledby="dashboard-title">
+                <div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">BIENVENIDO, GABRIEL</p><h1 class="mb-2 text-3xl font-medium tracking-tight text-slate-900" id="dashboard-title">Resumen de la producción</h1><p class="m-0 text-xs text-slate-600">Aquí tienes una vista general del estado de tus órdenes, talleres y producción.</p></div>
+                <div class="z-10 mr-20 grid size-16 rotate-[-7deg] place-items-center self-center rounded-xl bg-blue-700 text-3xl text-white shadow-xl shadow-blue-700/30" aria-hidden="true"><i class="fa-solid fa-chart-simple"></i></div>
             </section>
 
-            <section class="metric-grid" aria-label="Indicadores de producción">
-                <article class="metric-card">
-                    <div class="metric-icon blue"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
-                    <p>Órdenes activas</p><strong>0</strong><span class="change neutral"><i class="fa-solid fa-minus"></i> Sin registros todavía</span>
-                </article>
-                <article class="metric-card">
-                    <div class="metric-icon cyan"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i></div>
-                    <p>Cumplimiento de plazos</p><strong>0%</strong><span class="change neutral"><i class="fa-solid fa-minus"></i> Sin registros todavía</span>
-                </article>
-                <article class="metric-card">
-                    <div class="metric-icon violet"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></div>
-                    <p>Unidades producidas</p><strong>0</strong><span class="change neutral"><i class="fa-solid fa-minus"></i> Sin registros todavía</span>
-                </article>
-                <article class="metric-card">
-                    <div class="metric-icon coral"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div>
-                    <p>Prendas con defectos</p><strong>0</strong><span class="change neutral"><i class="fa-solid fa-minus"></i> Sin registros todavía</span>
-                </article>
-                <article class="metric-card capacity-card">
-                    <div class="metric-icon green"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></div>
-                    <p>Capacidad ocupada</p><strong>0%</strong>
-                    <div class="capacity-lines"><span>Propia <b><i style="width: 0%"></i></b> 0%</span><span>Externa <b><i style="width: 0%"></i></b> 0%</span></div>
-                </article>
+            <section class="my-4 grid grid-cols-5 gap-3.5" aria-label="Indicadores de producción">
+                <article class="min-h-40 rounded-xl border border-blue-100 bg-white p-5 shadow-md shadow-blue-900/5"><div class="mb-4 grid size-9 place-items-center rounded-lg bg-blue-100 text-blue-700"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div><p class="mb-2 text-xs text-slate-600">Órdenes activas</p><strong class="mb-2 block text-3xl leading-none text-slate-900">0</strong><span class="text-[10px] text-slate-500"><i class="fa-solid fa-minus"></i> Sin registros todavía</span></article>
+                <article class="min-h-40 rounded-xl border border-blue-100 bg-white p-5 shadow-md shadow-blue-900/5"><div class="mb-4 grid size-9 place-items-center rounded-lg bg-cyan-100 text-cyan-700"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i></div><p class="mb-2 text-xs text-slate-600">Cumplimiento de plazos</p><strong class="mb-2 block text-3xl leading-none text-slate-900">0%</strong><span class="text-[10px] text-slate-500"><i class="fa-solid fa-minus"></i> Sin registros todavía</span></article>
+                <article class="min-h-40 rounded-xl border border-blue-100 bg-white p-5 shadow-md shadow-blue-900/5"><div class="mb-4 grid size-9 place-items-center rounded-lg bg-violet-100 text-violet-700"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></div><p class="mb-2 text-xs text-slate-600">Unidades producidas</p><strong class="mb-2 block text-3xl leading-none text-slate-900">0</strong><span class="text-[10px] text-slate-500"><i class="fa-solid fa-minus"></i> Sin registros todavía</span></article>
+                <article class="min-h-40 rounded-xl border border-blue-100 bg-white p-5 shadow-md shadow-blue-900/5"><div class="mb-4 grid size-9 place-items-center rounded-lg bg-rose-100 text-rose-700"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div><p class="mb-2 text-xs text-slate-600">Prendas con defectos</p><strong class="mb-2 block text-3xl leading-none text-slate-900">0</strong><span class="text-[10px] text-slate-500"><i class="fa-solid fa-minus"></i> Sin registros todavía</span></article>
+                <article class="min-h-40 rounded-xl border border-blue-100 bg-white p-5 shadow-md shadow-blue-900/5"><div class="mb-4 grid size-9 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></div><p class="mb-2 text-xs text-slate-600">Capacidad ocupada</p><strong class="mb-2 block text-3xl leading-none text-slate-900">0%</strong><div class="mt-2 grid gap-1.5 text-[10px] text-slate-600"><span>Propia <b class="ml-1 inline-block h-1 w-16 rounded bg-slate-200"><i class="block h-full w-0 rounded bg-blue-600"></i></b> 0%</span><span>Externa <b class="ml-1 inline-block h-1 w-16 rounded bg-slate-200"><i class="block h-full w-0 rounded bg-blue-600"></i></b> 0%</span></div></article>
             </section>
 
-            <section class="content-grid">
-                <article class="surface orders-panel">
-                    <div class="section-heading"><div><p class="eyebrow">SEGUIMIENTO</p><h2>Órdenes de producción</h2></div><button class="text-button" type="button">Ver todas <i class="fa-solid fa-arrow-right"></i></button></div>
-                    <div class="empty-table">
-                        <div class="empty-icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
-                        <h3>Aún no hay órdenes de producción</h3>
-                        <p>Cuando registres una orden, su avance aparecerá aquí.</p>
-                        <button class="primary-button new-order-button" type="button"><i class="fa-solid fa-plus"></i> Nueva orden de producción</button>
-                    </div>
-                </article>
-
-                <aside class="side-stack">
-                    <article class="surface alerts-panel">
-                        <div class="section-heading"><h2><i class="fa-regular fa-bell"></i> Alertas</h2><span class="count-badge">0</span></div>
-                        <div class="empty-compact"><i class="fa-regular fa-circle-check"></i><strong>Todo está en orden</strong><span>No hay alertas pendientes.</span></div>
-                    </article>
-                </aside>
+            <section class="grid grid-cols-[minmax(0,1fr)_390px] gap-5">
+                <article class="min-h-[410px] rounded-xl border border-blue-100 bg-white p-6 shadow-md shadow-blue-900/5"><div class="mb-5 flex items-center justify-between"><div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">SEGUIMIENTO</p><h2 class="text-lg font-medium text-slate-900">Órdenes de producción</h2></div><button class="cursor-pointer border-0 bg-transparent text-sm text-blue-700" type="button">Ver todas <i class="fa-solid fa-arrow-right ml-1"></i></button></div><div class="empty-table flex min-h-[315px] flex-col items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50 text-center"><div class="mb-4 grid size-14 place-items-center rounded-xl bg-blue-50 text-2xl text-blue-400"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div><h3 class="mb-1 text-sm font-medium text-slate-900">Aún no hay órdenes de producción</h3><p class="mb-5 text-sm text-slate-400">Cuando registres una orden, su avance aparecerá aquí.</p><button class="new-order-button cursor-pointer rounded-lg border-0 bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25" type="button"><i class="fa-solid fa-plus mr-2"></i> Nueva orden de producción</button></div></article>
+                <aside><article class="min-h-[410px] rounded-xl border border-blue-100 bg-white p-6 shadow-md shadow-blue-900/5"><div class="mb-5 flex items-center justify-between"><h2 class="text-lg font-medium text-slate-900"><i class="fa-regular fa-bell mr-2 text-blue-700"></i> Alertas</h2><span class="grid size-8 place-items-center rounded-full bg-blue-100 text-sm font-medium text-blue-700">0</span></div><div class="flex min-h-80 flex-col items-center justify-center text-center text-sm text-slate-500"><i class="fa-regular fa-circle-check mb-3 text-4xl text-emerald-500"></i><strong class="mb-1 text-lg font-medium text-slate-700">Todo está en orden</strong><span>No hay alertas pendientes.</span></div></article></aside>
             </section>
-
         </main>
     </div>
 
-    <dialog class="order-dialog" id="order-dialog" aria-labelledby="order-dialog-title">
-        <form class="order-form" id="order-form">
-            <div class="dialog-heading">
-                <div><p class="eyebrow">REGISTRO DE PRODUCCIÓN</p><h2 id="order-dialog-title">Nueva orden de producción</h2></div>
-                <button class="close-dialog" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button>
+    <dialog class="fixed left-1/2 top-1/2 m-0 max-h-[calc(100vh-28px)] w-[720px] max-w-[calc(100%-28px)] -translate-x-1/2 -translate-y-1/2 rounded-xl border-0 p-0 text-slate-900 shadow-2xl shadow-blue-950/35" id="order-dialog" aria-labelledby="order-dialog-title">
+        <form class="max-h-[calc(100vh-28px)] overflow-y-auto p-7" id="order-form">
+            <div class="mb-6 flex items-start justify-between"><div><p class="mb-2 text-[10px] font-extrabold tracking-widest text-blue-700">REGISTRO DE PRODUCCIÓN</p><h2 class="text-xl font-bold">Nueva orden de producción</h2></div><button class="close-dialog cursor-pointer border-0 bg-transparent text-lg text-slate-600" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="grid grid-cols-2 gap-4 text-xs font-bold text-slate-700">
+                <label class="flex flex-col gap-2">Orden de Producción <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="orderNumber" id="order-number" readonly required placeholder="Selecciona una prenda" /></label>
+                <label class="flex flex-col gap-2">Tipo de Prenda <select class="w-full rounded-md border border-blue-200 bg-white p-3 font-normal outline-blue-600" name="garmentType" id="garment-type" required><option value="">Selecciona una prenda</option><option>Camisa</option><option>Blusa</option><option>Pantalón</option><option>Casacas</option><option>Short</option><option>Bermuda</option><option>T shirt</option><option>Polo box</option></select></label>
+                <label class="flex flex-col gap-2">Género <select class="w-full rounded-md border border-blue-200 bg-white p-3 font-normal outline-blue-600" name="gender" id="garment-gender" required><option value="">Selecciona un género</option><option>Mujer</option><option>Hombre</option></select></label>
+                <label class="flex flex-col gap-2">Tipo de tela <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="fabricType" required placeholder="Ej. Denim, algodón" /></label>
+                <label class="flex flex-col gap-2">Composición <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="composition" required placeholder="Ej. 98% algodón, 2% elastano" /></label>
+                <label class="flex flex-col gap-2">Modelo <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="model" required placeholder="Nombre o referencia" /></label>
+                <label class="flex flex-col gap-2">Cantidad <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="quantity" type="number" min="1" required placeholder="0" /></label>
+                <label class="flex flex-col gap-2">Curva <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="curve" required placeholder="Ej. XS: 10, S: 20, M: 30" /></label>
+                <label class="flex flex-col gap-2">Ancho de Tela <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="fabricWidth" required placeholder="Ej. 1.60 m" /></label>
+                <label class="flex flex-col gap-2">Taller <select class="w-full rounded-md border border-blue-200 bg-white p-3 font-normal outline-blue-600" name="workshopId" id="workshop-select" required><option value="">Selecciona un taller</option></select></label>
+                <label class="wash-field hidden flex-col gap-2">Tipo de lavado <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="washType" placeholder="Ej. Stone wash" /></label>
             </div>
-            <div class="form-grid">
-                <label>Orden de Producción <input name="orderNumber" id="order-number" readonly required placeholder="Selecciona una prenda" /></label>
-                <label>Tipo de Prenda <select name="garmentType" id="garment-type" required><option value="">Selecciona una prenda</option><option>Camisa</option><option>Blusa</option><option>Pantalón</option><option>Casacas</option><option>Short</option><option>Bermuda</option><option>T shirt</option><option>Polo box</option></select></label>
-                <label>Género <select name="gender" id="garment-gender" required><option value="">Selecciona un género</option><option>Mujer</option><option>Hombre</option></select></label>
-                <label>Tipo de tela <input name="fabricType" required placeholder="Ej. Denim, algodón" /></label>
-                <label>Composición <input name="composition" required placeholder="Ej. 98% algodón, 2% elastano" /></label>
-                <label>Modelo <input name="model" required placeholder="Nombre o referencia" /></label>
-                <label>Cantidad <input name="quantity" type="number" min="1" required placeholder="0" /></label>
-                <label>Curva <input name="curve" required placeholder="Ej. XS: 10, S: 20, M: 30" /></label>
-                <label>Ancho de Tela <input name="fabricWidth" required placeholder="Ej. 1.60 m" /></label>
-                <label>Taller <select name="workshopId" id="workshop-select" required><option value="">Selecciona un taller</option></select></label>
-                <label class="wash-field is-hidden">Tipo de lavado <input name="washType" placeholder="Ej. Stone wash" /></label>
-            </div>
-            <fieldset class="tracking-fieldset">
-                <legend>Seguimiento de la producción</legend>
-                <p>Define el avance inicial desde patronaje y establece el rizado de acuerdo a la curva.</p>
-                <div class="tracking-grid">
-                    <label class="check-field"><input name="patternmaking" type="checkbox" /> <span>Patronaje</span></label>
-                    <label>Rizado según curva <input name="gathering" placeholder="Ej. 1.5 x la curva" /></label>
-                    <label class="check-field"><input name="sewing" type="checkbox" /> <span>Confección</span></label>
-                    <label class="check-field"><input name="finishing" type="checkbox" /> <span>Acabados</span></label>
-                </div>
-            </fieldset>
-            <div class="dialog-actions"><button class="secondary-button close-dialog" type="button">Cancelar</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i> Crear orden</button></div>
+            <fieldset class="mt-5 rounded-lg border border-blue-200 p-4"><legend class="px-2 text-sm font-extrabold">Seguimiento de la producción</legend><p class="mb-4 text-[11px] text-slate-500">Define el avance inicial desde patronaje y establece el rizado de acuerdo a la curva.</p><div class="grid grid-cols-4 gap-3 text-xs font-bold text-slate-700"><label class="flex min-h-11 items-center justify-center gap-2 rounded-md border border-blue-200 px-2"><input class="accent-blue-700" name="patternmaking" type="checkbox" /> Patronaje</label><label class="flex flex-col gap-2">Rizado según curva <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="gathering" placeholder="Ej. 1.5 x la curva" /></label><label class="flex min-h-11 items-center justify-center gap-2 rounded-md border border-blue-200 px-2"><input class="accent-blue-700" name="sewing" type="checkbox" /> Confección</label><label class="flex min-h-11 items-center justify-center gap-2 rounded-md border border-blue-200 px-2"><input class="accent-blue-700" name="finishing" type="checkbox" /> Acabados</label></div></fieldset>
+            <div class="mt-6 flex justify-end gap-3"><button class="close-dialog cursor-pointer rounded-lg border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600" type="button">Cancelar</button><button class="cursor-pointer rounded-lg border-0 bg-blue-700 px-5 py-3 text-sm font-semibold text-white" type="submit"><i class="fa-solid fa-check mr-2"></i> Crear orden</button></div>
         </form>
     </dialog>
-
 </Layout>
 
-<script>
-    const dialog = document.querySelector('#order-dialog');
-    const form = document.querySelector('#order-form');
-    const workshopSelect = document.querySelector('#workshop-select');
-    const washField = document.querySelector('.wash-field');
-    const garmentType = document.querySelector('#garment-type');
-    const garmentGender = document.querySelector('#garment-gender');
-    const orderNumber = document.querySelector('#order-number');
-    const fabricInput = form?.elements.namedItem('fabricType');
-    const emptyTable = document.querySelector('.empty-table');
-    const ordersCount = document.querySelector('.metric-card strong');
-
-    const renderOrder = (order) => {
-        const status = ['patternmaking', 'sewing', 'finishing'].filter((stage) => order[stage]).length;
-        const assignedWorkshop = workshops().find((workshop) => workshop.id === order.workshopId);
-        if (emptyTable) {
-            emptyTable.classList.add('has-order');
-            emptyTable.innerHTML = `<div class="order-summary"><div><span class="order-id">${order.orderNumber}</span><h3>${order.garmentType} · ${order.model}</h3><p>${order.fabricType} · ${order.quantity} unidades · Curva: ${order.curve}</p></div><span class="order-status">${status}/3 etapas</span></div><div class="order-progress"><span style="width: ${(status / 3) * 100}%"></span></div><div class="order-meta"><span><i class="fa-solid fa-industry"></i> Taller: ${assignedWorkshop?.name || 'No asignado'}</span><span><i class="fa-solid fa-venus-mars"></i> Género: ${order.gender || 'Sin definir'}</span><span><i class="fa-solid fa-ruler-horizontal"></i> ${order.fabricWidth}</span><span><i class="fa-solid fa-layer-group"></i> ${order.composition}</span><span><i class="fa-solid fa-scissors"></i> Rizado: ${order.gathering || 'Pendiente'}</span></div>`;
-        }
-        if (ordersCount) ordersCount.textContent = '1';
-    };
-
-    const workshops = () => JSON.parse(localStorage.getItem('workshops') || '[]');
-    const orders = () => JSON.parse(localStorage.getItem('productionOrders') || '[]');
-    const garmentPrefixes = { Camisa: 'CAM', Blusa: 'BLU', 'Pantalón': 'PAN', Casacas: 'CAS', Short: 'SHO', Bermuda: 'BER', 'T shirt': 'TSH', 'Polo box': 'POB' };
-    const nextOrderNumber = (garment) => {
-        const prefix = garmentPrefixes[garment];
-        if (!prefix) return '';
-        const highestNumber = orders().reduce((highest, order) => {
-            const match = String(order.orderNumber || '').match(new RegExp(`^${prefix}-(\\d+)$`));
-            return match ? Math.max(highest, Number(match[1])) : highest;
-        }, 0);
-        return `${prefix}-${String(highestNumber + 1).padStart(3, '0')}`;
-    };
-    const openDialog = () => {
-        populateWorkshopSelect();
-        orderNumber.value = nextOrderNumber(garmentType.value);
-        dialog?.showModal();
-    };
-    const populateWorkshopSelect = () => {
-        if (workshopSelect) workshopSelect.innerHTML = '<option value="">Selecciona un taller</option>' + workshops().map((workshop) => `<option value="${workshop.id}">${workshop.name} (${workshop.type})</option>`).join('');
-    };
-    document.querySelectorAll('.new-order-button').forEach((button) => button.addEventListener('click', openDialog));
-    document.querySelectorAll('.close-dialog').forEach((button) => button.addEventListener('click', () => dialog?.close()));
-    fabricInput?.addEventListener('input', (event) => {
-        const isDenim = event.target.value.toLowerCase().includes('denim');
-        washField?.classList.toggle('is-hidden', !isDenim);
-        washField?.querySelector('input').toggleAttribute('required', isDenim);
-    });
-    garmentType?.addEventListener('change', () => {
-        orderNumber.value = nextOrderNumber(garmentType.value);
-        if (garmentType.value === 'Blusa') {
-            garmentGender.value = 'Mujer';
-        } else if (garmentGender.value === 'Mujer' && garmentType.value) {
-            garmentGender.value = '';
-        }
-    });
-    form?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const data = Object.fromEntries(new FormData(form).entries());
-        const savedOrders = orders().filter((order) => order.orderNumber !== data.orderNumber);
-        localStorage.setItem('productionOrders', JSON.stringify([...savedOrders, data]));
-        localStorage.setItem('productionOrder', JSON.stringify(data));
-        renderOrder(data);
-        dialog?.close();
-        form.reset();
-        washField?.classList.add('is-hidden');
-    });
-
-    const savedOrder = localStorage.getItem('productionOrder');
-    if (savedOrder) renderOrder(JSON.parse(savedOrder));
-    populateWorkshopSelect();
-</script>
-
 <style>
-    :global(*) { box-sizing: border-box; }
-    .app-shell { display: flex; min-height: 100vh; color: #102f56; }
-    .dashboard { flex: 1; min-width: 0; padding: 30px 38px 50px; background: #eaf2fb; }
-    .topbar, .topbar-actions, .profile, .breadcrumb { display: flex; align-items: center; }
-    .topbar { justify-content: space-between; margin-bottom: 26px; color: #4e6b8c; font-size: 13px; }
-    .breadcrumb { gap: 8px; } .breadcrumb span:last-child { color: #7892ad; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #13ad78; box-shadow: 0 0 0 4px #c8f3e3; }
-    .topbar-actions { gap: 20px; } .icon-button { position: relative; border: 0; background: transparent; color: #315b87; font-size: 18px; cursor: pointer; }
-    .notification-dot { position: absolute; right: -2px; top: -2px; width: 6px; height: 6px; border-radius: 50%; background: #ff6972; }
-    .profile { gap: 9px; font-size: 12px; } .profile strong, .profile span { display: block; } .profile span { margin-top: 2px; color: #66809f; font-size: 10px; } .profile > i { margin-left: 5px; font-size: 10px; color: #547495; }
-    .avatar { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 50%; background: #b8d9ff; color: #075bb7; font-weight: 800; }
-    .welcome-panel { position: relative; display: flex; justify-content: space-between; min-height: 164px; overflow: hidden; padding: 34px 40px; border: 1px solid #b9d4ef; border-radius: 10px; background: linear-gradient(105deg, #ffffff 0%, #ffffff 48%, #cce5ff 100%); box-shadow: 0 9px 25px #6e9ac933; }
-    .welcome-panel::after { position: absolute; right: 52px; top: -85px; width: 310px; height: 260px; border: 25px solid #91c5f5; border-radius: 50%; content: ""; opacity: .7; transform: rotate(-22deg); }
-    .eyebrow { margin: 0 0 7px; color: #1765ad; font-size: 10px; font-weight: 800; letter-spacing: .08em; }
-    h1, h2, h3, p { margin-top: 0; } h1 { margin-bottom: 7px; font-size: clamp(24px, 2.3vw, 32px); letter-spacing: -.03em; } h2 { margin-bottom: 0; font-size: 14px; } h3 { margin-bottom: 6px; font-size: 14px; } .muted { margin-bottom: 0; color: #4e6b8c; font-size: 12px; }
-    .welcome-mark { z-index: 1; align-self: center; display: grid; width: 66px; height: 66px; margin-right: 78px; place-items: center; border-radius: 9px; background: #0c70d4; color: white; font-size: 28px; box-shadow: 0 12px 22px #0a5bb65e; transform: rotate(-7deg); }
-    .metric-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 14px 0; } .metric-card, .surface { border: 1px solid #c2d6ea; border-radius: 9px; background: #fff; box-shadow: 0 6px 18px #517da31f; }
-    .metric-card { min-height: 160px; padding: 19px; } .metric-icon { display: grid; width: 37px; height: 37px; margin-bottom: 15px; place-items: center; border-radius: 9px; font-size: 16px; } .metric-icon.blue { background: #c5e1ff; color: #0865c9; } .metric-icon.cyan { background: #bceef4; color: #087f9b; } .metric-icon.violet { background: #ddd1ff; color: #6940c7; } .metric-icon.coral { background: #ffd0d4; color: #c93646; } .metric-icon.green { background: #bcefd9; color: #08845c; }
-    .metric-card p { margin-bottom: 9px; color: #3d5e82; font-size: 12px; } .metric-card strong { display: block; margin-bottom: 8px; color: #102f56; font-size: 29px; line-height: 1; } .change { font-size: 10px; } .change.neutral { color: #66809d; } .capacity-lines { margin-top: 7px; color: #54718f; font-size: 10px; } .capacity-lines span { display: flex; align-items: center; gap: 7px; margin-top: 6px; } .capacity-lines b { display: inline-block; width: 74px; height: 5px; border-radius: 4px; background: #c2d6e9; } .capacity-lines i { display: block; height: 100%; border-radius: inherit; background: #0875d1; }
-    .content-grid { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 18px; } .surface { padding: 25px; } .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; } .section-heading h2 { font-size: 17px; } .text-button { border: 0; background: none; color: #0865c9; font-size: 13px; cursor: pointer; } .text-button i { margin-left: 5px; }
-    .orders-panel { min-height: 410px; } .empty-table { display: flex; min-height: 315px; align-items: center; justify-content: center; flex-direction: column; border: 1px dashed #d8e5f1; border-radius: 7px; background: #fbfdff; text-align: center; } .empty-icon { display: grid; width: 58px; height: 58px; margin-bottom: 17px; place-items: center; border-radius: 12px; background: #eaf4ff; color: #5b9fe9; font-size: 25px; } .empty-table p { margin-bottom: 21px; color: #91a4b9; font-size: 14px; }
-    .order-dialog { position: fixed; inset: 50% auto auto 50%; width: min(720px, calc(100% - 28px)); max-height: calc(100vh - 28px); padding: 0; border: 0; border-radius: 12px; color: #102f56; box-shadow: 0 25px 80px #18345d59; transform: translate(-50%, -50%); } .order-dialog::backdrop { background: #092748a6; backdrop-filter: blur(4px); } .order-form { padding: 28px; overflow-y: auto; max-height: calc(100vh - 28px); } .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; } .dialog-heading h2 { font-size: 21px; } .close-dialog { border: 0; background: transparent; color: #315b87; font-size: 18px; cursor: pointer; } .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; } .form-grid label, .tracking-grid label { display: flex; flex-direction: column; gap: 7px; color: #315b87; font-size: 12px; font-weight: 700; } .form-grid input, .tracking-grid input { width: 100%; padding: 11px 12px; border: 1px solid #abc7e2; border-radius: 6px; outline-color: #0b70d4; color: #102f56; font: inherit; font-size: 13px; font-weight: 400; } .is-hidden { display: none !important; } .tracking-fieldset { margin: 22px 0 0; padding: 16px; border: 1px solid #b9d0e6; border-radius: 8px; } .tracking-fieldset legend { padding: 0 7px; color: #102f56; font-size: 13px; font-weight: 800; } .tracking-fieldset p { margin: 0 0 15px; color: #587493; font-size: 11px; } .tracking-grid { display: grid; grid-template-columns: 1fr 1.4fr 1fr 1fr; gap: 12px; } .check-field { flex-direction: row !important; align-items: center; justify-content: center; min-height: 43px; padding: 0 9px; border: 1px solid #abc7e2; border-radius: 6px; } .check-field input { width: auto; accent-color: #0b70d4; } .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; } .secondary-button { padding: 12px 17px; border: 1px solid #abc7e2; border-radius: 8px; background: white; color: #315b87; font: inherit; cursor: pointer; }
-    .empty-table.has-order { align-items: stretch; justify-content: flex-start; padding: 24px; border-style: solid; text-align: left; } .order-summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; } .order-summary h3 { margin: 7px 0 5px; color: #18345d; font-size: 17px; } .order-summary p { margin: 0; color: #8195ac; font-size: 12px; } .order-id, .order-status { color: #287fe1; font-size: 11px; font-weight: 800; letter-spacing: .05em; } .order-status { padding: 7px 9px; border-radius: 5px; background: #e9f4ff; white-space: nowrap; } .order-progress { height: 7px; margin: 25px 0 20px; overflow: hidden; border-radius: 5px; background: #e3edf6; } .order-progress span { display: block; height: 100%; border-radius: inherit; background: #35c89b; } .order-meta { display: flex; flex-wrap: wrap; gap: 14px; color: #7189a4; font-size: 11px; } .order-meta i { margin-right: 5px; color: #287fe1; }
-    .workshop-report { margin-top: 18px; } .workshop-report .section-heading { margin-bottom: 22px; } .workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 14px; } .workshop-card { padding: 19px; border: 1px solid #abc7e2; border-radius: 8px; background: #f5faff; } .workshop-card-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; } .workshop-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 8px; background: #bcdcff; color: #075fbd; font-size: 16px; } .workshop-type { padding: 5px 8px; border-radius: 5px; background: #d7f4e8; color: #087c58; font-size: 10px; font-weight: 800; text-transform: uppercase; } .workshop-card h3 { margin-bottom: 5px; color: #102f56; font-size: 16px; } .workshop-card > p { margin-bottom: 14px; color: #315b87; font-size: 12px; } .workshop-details { display: grid; gap: 6px; padding: 12px 0; border-top: 1px solid #d6e5f3; border-bottom: 1px solid #d6e5f3; color: #587493; font-size: 11px; } .workshop-details i { width: 14px; color: #0865c9; } .workshop-load { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; } .workshop-load div { display: flex; flex-direction: column; gap: 3px; } .workshop-load strong { color: #075fbd; font-size: 18px; } .workshop-load span { color: #587493; font-size: 10px; line-height: 1.2; } .report-empty { grid-column: 1 / -1; padding: 30px; border: 1px dashed #abc7e2; border-radius: 8px; background: #f5faff; color: #587493; text-align: center; } .report-empty i { margin-bottom: 10px; color: #0b70d4; font-size: 28px; } .report-empty p { margin-bottom: 5px; color: #315b87; font-size: 14px; font-weight: 700; } .report-empty span { font-size: 12px; }
-    .primary-button, .quick-action { border: 0; border-radius: 8px; background: #075fbd; color: #fff; font: inherit; font-size: 14px; cursor: pointer; } .primary-button { padding: 14px 19px; box-shadow: 0 6px 14px #075fbd45; } .primary-button i, .quick-action i { margin-right: 9px; }
-    .side-stack { display: grid; align-content: stretch; } .alerts-panel { min-height: 410px; } .section-heading h2 i { margin-right: 9px; color: #0865c9; } .count-badge { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 50%; background: #d6e8fb; color: #075fbd; font-size: 14px; font-weight: 700; } .empty-compact { display: flex; min-height: 320px; align-items: center; justify-content: center; flex-direction: column; color: #7189a4; font-size: 14px; text-align: center; } .empty-compact > i { margin-bottom: 14px; color: #0aab76; font-size: 38px; } .empty-compact strong { margin-bottom: 7px; color: #315b87; font-size: 17px; }
-    @media (max-width: 1220px) { .metric-grid { grid-template-columns: repeat(3, 1fr); } .content-grid { grid-template-columns: 1fr; } .side-stack { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 780px) { .app-shell { display: block; } .dashboard { padding: 20px 14px 30px; } .metric-grid, .bottom-grid { grid-template-columns: 1fr 1fr; } .side-stack { grid-template-columns: 1fr; } .orders-panel { grid-column: 1 / -1; } .welcome-mark { display: none; } }
-    @media (max-width: 520px) { .metric-grid, .bottom-grid, .side-stack { grid-template-columns: 1fr; } .topbar { align-items: flex-start; } .profile > div:last-of-type { display: none; } .welcome-panel { padding: 22px; } }
-    .form-grid select { width: 100%; padding: 11px 12px; border: 1px solid #abc7e2; border-radius: 6px; outline-color: #0b70d4; color: #102f56; background: #fff; font: inherit; font-size: 13px; }
-    @media (max-width: 620px) { .form-grid, .tracking-grid { grid-template-columns: 1fr; } .order-form { padding: 22px 18px; } }
-</style>
-
-<style is:global>
-    body:has(#order-dialog) .empty-table.has-order { display: block; min-height: 315px; padding: 26px; border: 1px solid #c8d6e8; border-radius: 10px; background: #fff; color: #102548; text-align: left; box-shadow: 0 8px 20px #10254812; }
-    body:has(#order-dialog) .empty-table.has-order .order-summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
-    body:has(#order-dialog) .empty-table.has-order .order-id { display: inline-block; margin-bottom: 8px; color: #075fbd; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
-    body:has(#order-dialog) .empty-table.has-order .order-summary h3 { margin: 0 0 7px; color: #102548; font-size: 20px; line-height: 1.2; }
-    body:has(#order-dialog) .empty-table.has-order .order-summary p { margin: 0; color: #5a6f8d; font-size: 13px; }
-    body:has(#order-dialog) .empty-table.has-order .order-status { flex: 0 0 auto; padding: 8px 11px; border-radius: 6px; background: #e3effc; color: #075fbd; font-size: 12px; font-weight: 800; white-space: nowrap; }
-    body:has(#order-dialog) .empty-table.has-order .order-progress { height: 8px; margin: 25px 0 22px; overflow: hidden; border-radius: 8px; background: #e5ebf3; }
-    body:has(#order-dialog) .empty-table.has-order .order-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #075fbd, #16a878); }
-    body:has(#order-dialog) .empty-table.has-order .order-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; padding-top: 18px; border-top: 1px solid #e0e7f0; color: #526985; font-size: 12px; }
-    body:has(#order-dialog) .empty-table.has-order .order-meta span { display: flex; align-items: center; min-width: 0; gap: 7px; }
-    body:has(#order-dialog) .empty-table.has-order .order-meta i { width: 16px; flex: 0 0 16px; color: #075fbd; text-align: center; }
-    @media (max-width: 620px) {
-        body:has(#order-dialog) .empty-table.has-order { padding: 20px; }
-        body:has(#order-dialog) .empty-table.has-order .order-summary { gap: 14px; flex-direction: column; }
-        body:has(#order-dialog) .empty-table.has-order .order-meta { grid-template-columns: 1fr; }
-    }
+    dialog::backdrop { background: rgb(9 39 72 / 65%); backdrop-filter: blur(4px); }
 </style>

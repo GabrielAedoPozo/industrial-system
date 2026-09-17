@@ -1,289 +1,65 @@
 ---
 import "../styles/global.css";
-import Layout from '../layouts/Layout.astro';
-import Menu from '../components/menu.astro';
+import Layout from "../layouts/Layout.astro";
+import Menu from "../components/menu.astro";
 ---
 
 <Layout>
-    <div class="app-shell">
-        <Menu></Menu>
-        <main class="dashboard" id="reporte-taller">
-            <header class="topbar">
-                <div class="breadcrumb"><span class="status-dot"></span> Panel de control <span>/</span> Reporte por taller</div>
-                <a class="back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
+    <div class="flex min-h-screen text-slate-900">
+        <Menu />
+        <main class="min-w-0 flex-1 bg-slate-50 p-8 pb-12" id="reporte-taller">
+            <header class="mb-7 flex items-center justify-between text-sm text-slate-500">
+                <div class="flex items-center gap-2"><span class="size-2 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></span> Panel de control <span class="text-slate-400">/</span> Reporte por taller</div>
+                <a class="font-medium text-blue-700 no-underline" href="/"><i class="fa-solid fa-arrow-left mr-2"></i> Volver al inicio</a>
             </header>
 
-            <section class="welcome-panel" aria-labelledby="report-title">
-                <div>
-                    <p class="eyebrow">CAPACIDAD Y SEGUIMIENTO</p>
-                    <h1 id="report-title">Reporte por taller</h1>
-                    <p class="muted">Consulta la carga de trabajo, capacidad y responsables de cada taller.</p>
-                </div>
-                <div class="welcome-mark" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <section class="relative flex min-h-48 justify-between overflow-hidden rounded-xl border border-slate-200 bg-white px-10 py-9 shadow-lg shadow-slate-900/5" aria-labelledby="report-title">
+                <div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">CAPACIDAD Y SEGUIMIENTO</p><h1 class="mb-2 text-3xl font-medium text-slate-900" id="report-title">Reporte por taller</h1><p class="m-0 text-xs text-slate-600">Consulta la carga de trabajo, capacidad y responsables de cada taller.</p></div>
+                <div class="z-10 mr-20 grid size-20 -rotate-6 place-items-center rounded-xl bg-slate-100 text-3xl text-blue-700 shadow-md" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></div>
             </section>
 
-            <section class="surface report-panel">
-                <div class="section-heading"><div><p class="eyebrow">DIRECTORIO</p><h2>Perfiles de talleres</h2><p class="section-caption">Selecciona un taller para revisar y actualizar su avance.</p></div><button class="primary-button" id="new-workshop-button" type="button"><i class="fa-solid fa-plus"></i> Crear perfil de taller</button></div>
-                <div class="workshop-grid" id="workshop-grid"><div class="report-empty"><i class="fa-solid fa-screwdriver-wrench"></i><p>Aún no hay perfiles de talleres.</p><span>Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div></div>
+            <section class="relative mt-5 rounded-xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5">
+                <div class="mb-6 flex items-center justify-between">
+                    <div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">DIRECTORIO</p><h2 class="text-lg font-medium">Perfiles de talleres</h2><p class="mt-1 text-[11px] text-slate-500">Selecciona un taller para revisar y actualizar su avance.</p></div>
+                    <button class="cursor-pointer rounded-lg border border-blue-700 bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-blue-700/15" id="new-workshop-button" type="button"><i class="fa-solid fa-plus mr-2"></i> Crear perfil de taller</button>
+                </div>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4" id="workshop-grid"><div class="col-span-full rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-600"><i class="fa-solid fa-screwdriver-wrench mb-3 text-3xl text-blue-700"></i><p class="mb-1 font-medium text-slate-900">Aún no hay perfiles de talleres.</p><span class="text-xs">Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div></div>
             </section>
         </main>
     </div>
 
-    <dialog class="workshop-dialog" id="workshop-dialog" aria-labelledby="workshop-dialog-title">
-        <form class="order-form" id="workshop-form">
-            <div class="dialog-heading"><div><p class="eyebrow">DIRECTORIO DE TALLERES</p><h2 id="workshop-dialog-title">Perfil de taller</h2></div><button class="close-dialog" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="form-grid">
-                <label>Nombre del taller <input name="name" required placeholder="Ej. Confecciones Norte" /></label>
-                <label>Responsable <input name="contact" required placeholder="Nombre del responsable" /></label>
-                <label class="fixed-field">Tipo de taller <span>Externo</span><input name="type" type="hidden" value="Externo" /></label>
-                <label>Especialidad <input name="specialty" required placeholder="Ej. Confección y acabados" /></label>
-                <label>Teléfono <input name="phone" placeholder="Número de contacto" /></label>
-                <label>Capacidad mensual <input name="capacity" type="number" min="1" required placeholder="Unidades" /></label>
+    <dialog class="fixed left-1/2 top-1/2 m-0 max-h-[calc(100vh-28px)] w-[720px] max-w-[calc(100%-28px)] -translate-x-1/2 -translate-y-1/2 rounded-xl border-0 p-0 text-slate-900 shadow-2xl shadow-blue-950/35" id="workshop-dialog" aria-labelledby="workshop-dialog-title">
+        <form class="max-h-[calc(100vh-28px)] overflow-y-auto p-7" id="workshop-form">
+            <div class="mb-6 flex items-start justify-between"><div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">DIRECTORIO DE TALLERES</p><h2 class="text-xl font-medium" id="workshop-dialog-title">Perfil de taller</h2></div><button class="close-dialog cursor-pointer border-0 bg-transparent text-lg text-slate-600" type="button" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="grid grid-cols-2 gap-4 text-xs font-bold text-slate-700">
+                <label class="flex flex-col gap-2">Nombre del taller <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="name" required placeholder="Ej. Confecciones Norte" /></label>
+                <label class="flex flex-col gap-2">Responsable <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="contact" required placeholder="Nombre del responsable" /></label>
+                <label class="flex flex-col gap-2">Tipo de taller <span class="rounded-md border border-blue-200 bg-slate-50 p-3 font-normal">Externo</span><input name="type" type="hidden" value="Externo" /></label>
+                <label class="flex flex-col gap-2">Especialidad <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="specialty" required placeholder="Ej. Confección y acabados" /></label>
+                <label class="flex flex-col gap-2">Teléfono <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="phone" placeholder="Número de contacto" /></label>
+                <label class="flex flex-col gap-2">Capacidad mensual <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="capacity" type="number" min="1" required placeholder="Unidades" /></label>
+                <label class="flex flex-col gap-2">Total de pago <input class="w-full rounded-md border border-blue-200 p-3 font-normal outline-blue-600" name="totalPayment" type="number" min="0" step="0.01" required placeholder="S/ 0.00" /></label>
             </div>
-            <div class="dialog-actions"><button class="secondary-button close-dialog" type="button">Cancelar</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i> Guardar perfil</button></div>
+            <div class="mt-6 flex justify-end gap-3"><button class="close-dialog cursor-pointer rounded-lg border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600" type="button">Cancelar</button><button class="cursor-pointer rounded-lg border-0 bg-blue-700 px-5 py-3 text-sm font-semibold text-white" type="submit"><i class="fa-solid fa-check mr-2"></i> Guardar perfil</button></div>
         </form>
     </dialog>
 
-    <dialog class="workshop-dialog detail-dialog" id="workshop-detail-dialog" aria-labelledby="workshop-detail-title">
-        <form class="order-form" id="workshop-detail-form">
-            <div class="dialog-heading"><div><p class="eyebrow">SEGUIMIENTO DEL AUDITOR</p><h2 id="workshop-detail-title">Detalle del taller</h2></div><button class="close-dialog" type="button" aria-label="Cerrar detalle"><i class="fa-solid fa-xmark"></i></button></div>
-            <p class="detail-intro">Define manualmente qué porcentaje del procedimiento está terminado.</p>
-            <div class="progress-editor">
-                <div class="progress-editor-header"><span>Avance del procedimiento</span><output id="progress-output">0%</output></div>
-                <input id="progress-range" name="progress" type="range" min="0" max="100" value="0" />
-                <div class="range-labels"><span>Inicio</span><span>Completado</span></div>
+    <dialog class="fixed left-1/2 top-1/2 m-0 max-h-[calc(100vh-28px)] w-[720px] max-w-[calc(100%-28px)] -translate-x-1/2 -translate-y-1/2 rounded-xl border-0 p-0 text-slate-900 shadow-2xl shadow-blue-950/35" id="workshop-detail-dialog" aria-labelledby="workshop-detail-title">
+        <form class="max-h-[calc(100vh-28px)] overflow-y-auto p-7" id="workshop-detail-form">
+            <div class="mb-6 flex items-start justify-between"><div><p class="mb-2 text-[10px] font-semibold tracking-widest text-blue-700">SEGUIMIENTO DEL AUDITOR</p><h2 class="text-xl font-medium" id="workshop-detail-title">Detalle del taller</h2></div><button class="close-dialog cursor-pointer border-0 bg-transparent text-lg text-slate-600" type="button" aria-label="Cerrar detalle"><i class="fa-solid fa-xmark"></i></button></div>
+            <p class="mb-5 text-xs text-slate-500">Define manualmente qué porcentaje del procedimiento está terminado.</p>
+            <div class="rounded-lg border border-blue-200 bg-blue-50 p-5">
+                <div class="flex items-center justify-between text-sm font-bold text-slate-700"><span>Avance del procedimiento</span><output class="text-2xl text-blue-700" id="progress-output">0%</output></div>
+                <input class="my-5 w-full cursor-pointer accent-blue-700" id="progress-range" name="progress" type="range" min="0" max="100" value="0" />
+                <div class="flex justify-between text-[10px] text-slate-500"><span>Inicio</span><span>Completado</span></div>
+                <div class="mt-5 flex items-center justify-between border-t border-blue-200 pt-4 text-sm text-slate-600"><span>Pago acumulado</span><output class="text-xl font-semibold text-emerald-700" id="payment-output">S/ 0.00</output></div>
             </div>
-            <label class="notes-field">Observaciones del auditor<textarea id="progress-notes" name="notes" rows="3" placeholder="Añade una observación opcional"></textarea></label>
-            <div class="dialog-actions"><button class="secondary-button close-dialog" type="button">Cancelar</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i> Guardar avance</button></div>
+            <label class="mt-5 flex flex-col gap-2 text-xs font-bold text-slate-700">Observaciones del auditor <textarea class="w-full resize-y rounded-md border border-blue-200 p-3 font-normal outline-blue-600" id="progress-notes" name="notes" rows="3" placeholder="Añade una observación opcional"></textarea></label>
+            <div class="mt-6 flex justify-end gap-3"><button class="close-dialog cursor-pointer rounded-lg border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600" type="button">Cancelar</button><button class="cursor-pointer rounded-lg border-0 bg-blue-700 px-5 py-3 text-sm font-semibold text-white" type="submit"><i class="fa-solid fa-check mr-2"></i> Guardar avance</button></div>
         </form>
     </dialog>
 </Layout>
 
-<script>
-    const workshopDialog = document.querySelector('#workshop-dialog');
-    const workshopForm = document.querySelector('#workshop-form');
-    const workshopGrid = document.querySelector('#workshop-grid');
-    const detailDialog = document.querySelector('#workshop-detail-dialog');
-    const detailForm = document.querySelector('#workshop-detail-form');
-    const progressRange = document.querySelector('#progress-range');
-    const progressOutput = document.querySelector('#progress-output');
-    const progressNotes = document.querySelector('#progress-notes');
-    let selectedWorkshopId = null;
-    const workshops = () => JSON.parse(localStorage.getItem('workshops') || '[]');
-    const orders = () => JSON.parse(localStorage.getItem('productionOrders') || '[]');
-
-    const renderWorkshops = () => {
-        const workshopList = workshops();
-        workshopGrid.innerHTML = workshopList.length ? workshopList.map((workshop) => {
-            const assignedOrders = orders().filter((order) => order.workshopId === workshop.id);
-            const units = assignedOrders.reduce((total, order) => total + Number(order.quantity || 0), 0);
-            const progress = Number(workshop.progress || 0);
-            return `<button class="workshop-card" type="button" data-workshop-id="${workshop.id}" aria-label="Abrir detalle de ${workshop.name}"><span class="workshop-card-heading"><span class="workshop-icon"><i class="fa-solid fa-industry"></i></span><span class="workshop-type">${workshop.type}</span></span><span class="workshop-card-title"><span><h3>${workshop.name}</h3><span class="workshop-specialty">${workshop.specialty}</span></span><i class="fa-solid fa-arrow-up-right-from-square workshop-open-icon" aria-hidden="true"></i></span><span class="workshop-details"><span><i class="fa-solid fa-user"></i> ${workshop.contact}</span><span><i class="fa-solid fa-phone"></i> ${workshop.phone || 'Sin teléfono'}</span></span><span class="progress-summary"><span><strong>${progress}%</strong><span>avance del procedimiento</span></span><span class="progress-track"><span style="width: ${progress}%"></span></span></span><span class="workshop-load"><span><strong>${assignedOrders.length}</strong><span>órdenes asignadas</span></span><span><strong>${units}</strong><span>prendas</span></span><span><strong>${workshop.capacity}</strong><span>capacidad mensual</span></span></span></button>`;
-        }).join('') : '<div class="report-empty"><i class="fa-solid fa-screwdriver-wrench"></i><p>Aún no hay perfiles de talleres.</p><span>Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div>';
-        workshopGrid.querySelectorAll('[data-workshop-id]').forEach((card) => card.addEventListener('click', () => openWorkshopDetail(card.dataset.workshopId)));
-    };
-
-    const openWorkshopDetail = (workshopId) => {
-        const workshop = workshops().find((item) => item.id === workshopId);
-        if (!workshop) return;
-        selectedWorkshopId = workshopId;
-        document.querySelector('#workshop-detail-title').textContent = workshop.name;
-        progressRange.value = workshop.progress || 0;
-        progressNotes.value = workshop.notes || '';
-        progressOutput.textContent = `${progressRange.value}%`;
-        detailDialog?.showModal();
-    };
-
-    document.querySelector('#new-workshop-button')?.addEventListener('click', () => workshopDialog?.showModal());
-    document.querySelectorAll('.close-dialog').forEach((button) => button.addEventListener('click', () => button.closest('dialog')?.close()));
-    workshopForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const profile = { ...Object.fromEntries(new FormData(workshopForm).entries()), progress: 0, notes: '', id: `workshop-${Date.now()}` };
-        localStorage.setItem('workshops', JSON.stringify([...workshops(), profile]));
-        renderWorkshops();
-        workshopDialog?.close();
-        workshopForm.reset();
-    });
-
-    progressRange?.addEventListener('input', () => { progressOutput.textContent = `${progressRange.value}%`; });
-    detailForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const updatedWorkshops = workshops().map((workshop) => workshop.id === selectedWorkshopId ? { ...workshop, progress: Number(progressRange.value), notes: progressNotes.value.trim() } : workshop);
-        localStorage.setItem('workshops', JSON.stringify(updatedWorkshops));
-        renderWorkshops();
-        detailDialog?.close();
-    });
-
-    renderWorkshops();
-</script>
-
 <style>
-    :global(*) { box-sizing: border-box; }
-    .app-shell { display: flex; min-height: 100vh; color: #102f56; }
-    .dashboard { flex: 1; min-width: 0; padding: 30px 38px 50px; background: #eaf2fb; }
-    .topbar, .breadcrumb { display: flex; align-items: center; }
-    .topbar { justify-content: space-between; margin-bottom: 26px; color: #4e6b8c; font-size: 13px; }
-    .breadcrumb { gap: 8px; } .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #13ad78; box-shadow: 0 0 0 4px #c8f3e3; } .back-link { color: #075fbd; font-size: 13px; font-weight: 700; text-decoration: none; } .back-link i { margin-right: 6px; }
-    .welcome-panel { position: relative; display: flex; justify-content: space-between; min-height: 164px; overflow: hidden; padding: 34px 40px; border: 1px solid #b9d4ef; border-radius: 10px; background: linear-gradient(105deg, #fff 0%, #fff 48%, #cce5ff 100%); box-shadow: 0 9px 25px #6e9ac933; } .welcome-panel::after { position: absolute; right: 52px; top: -85px; width: 310px; height: 260px; border: 25px solid #91c5f5; border-radius: 50%; content: ""; opacity: .7; transform: rotate(-22deg); } .welcome-mark { z-index: 1; align-self: center; display: grid; width: 66px; height: 66px; margin-right: 78px; place-items: center; border-radius: 9px; background: #0c70d4; color: white; font-size: 28px; box-shadow: 0 12px 22px #0a5bb65e; transform: rotate(-7deg); }
-    .eyebrow { margin: 0 0 7px; color: #1765ad; font-size: 10px; font-weight: 800; letter-spacing: .08em; } h1, h2, h3, p { margin-top: 0; } h1 { margin-bottom: 7px; color: #102f56; font-size: clamp(24px, 2.3vw, 32px); } h2 { margin-bottom: 0; font-size: 17px; } .muted { margin: 0; color: #4e6b8c; font-size: 12px; }
-    .surface { margin-top: 18px; padding: 25px; border: 1px solid #c2d6ea; border-radius: 9px; background: #fff; box-shadow: 0 6px 18px #517da31f; } .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; } .section-caption { margin: 5px 0 0; color: #7892ad; font-size: 11px; }
-    .primary-button { padding: 14px 19px; border: 0; border-radius: 8px; background: #075fbd; color: #fff; font: inherit; font-size: 14px; cursor: pointer; box-shadow: 0 6px 14px #075fbd45; } .primary-button i { margin-right: 9px; }
-    .workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; } .workshop-card { display: block; width: 100%; padding: 20px; border: 1px solid #abc7e2; border-radius: 8px; background: #f8fbff; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; } .workshop-card:hover, .workshop-card:focus-visible { border-color: #4d9ae8; box-shadow: 0 10px 22px #517da32b; outline: none; transform: translateY(-2px); } .workshop-card-heading, .workshop-card-title { display: flex; align-items: center; justify-content: space-between; } .workshop-card-heading { margin-bottom: 17px; } .workshop-icon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 8px; background: #dcecff; color: #075fbd; font-size: 16px; } .workshop-type { padding: 5px 8px; border-radius: 5px; background: #d7f4e8; color: #087c58; font-size: 10px; font-weight: 800; text-transform: uppercase; } .workshop-card-title { align-items: flex-start; gap: 12px; min-height: 42px; } .workshop-card h3 { margin: 0 0 5px; color: #102f56; font-size: 17px; } .workshop-specialty { display: block; color: #315b87; font-size: 12px; } .workshop-open-icon { margin-top: 3px; color: #75a2cb; font-size: 13px; } .workshop-details { display: grid; gap: 6px; margin-top: 16px; padding: 12px 0; border-top: 1px solid #d6e5f3; border-bottom: 1px solid #d6e5f3; color: #587493; font-size: 11px; } .workshop-details i { width: 14px; color: #0865c9; } .progress-summary { display: block; margin-top: 15px; } .progress-summary > span:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; } .progress-summary strong { color: #075fbd; font-size: 20px; } .progress-summary > span:first-child > span { color: #587493; font-size: 10px; text-align: right; } .progress-track { display: block; height: 7px; margin-top: 8px; overflow: hidden; border-radius: 6px; background: #e0ebf5; } .progress-track > span { display: block; height: 100%; border-radius: inherit; background: #13ad78; } .workshop-load { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 17px; } .workshop-load > span { display: flex; flex-direction: column; gap: 3px; } .workshop-load strong { color: #075fbd; font-size: 17px; } .workshop-load > span > span { color: #587493; font-size: 10px; line-height: 1.2; }
-    .report-empty { grid-column: 1 / -1; padding: 30px; border: 1px dashed #abc7e2; border-radius: 8px; background: #f5faff; color: #587493; text-align: center; } .report-empty i { margin-bottom: 10px; color: #0b70d4; font-size: 28px; } .report-empty p { margin-bottom: 5px; color: #315b87; font-size: 14px; font-weight: 700; } .report-empty span { font-size: 12px; }
-    .workshop-dialog { position: fixed; inset: 50% auto auto 50%; width: min(720px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 12px; box-shadow: 0 25px 80px #18345d59; transform: translate(-50%, -50%); } .workshop-dialog::backdrop { background: #092748a6; backdrop-filter: blur(4px); } .order-form { padding: 28px; } .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; } .dialog-heading h2 { font-size: 21px; } .close-dialog { border: 0; background: transparent; color: #315b87; font-size: 18px; cursor: pointer; } .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; } .form-grid label, .notes-field { display: flex; flex-direction: column; gap: 7px; color: #315b87; font-size: 12px; font-weight: 700; } .form-grid input, .form-grid select, .notes-field textarea { width: 100%; padding: 11px 12px; border: 1px solid #abc7e2; border-radius: 6px; outline-color: #0b70d4; color: #102f56; font: inherit; font-size: 13px; } .detail-intro { margin: -8px 0 22px; color: #587493; font-size: 12px; } .progress-editor { padding: 18px; border: 1px solid #d4e3f1; border-radius: 8px; background: #f7fbff; } .progress-editor-header { display: flex; align-items: center; justify-content: space-between; color: #315b87; font-size: 13px; font-weight: 700; } .progress-editor output { color: #075fbd; font-size: 24px; } .progress-editor input[type="range"] { width: 100%; margin: 19px 0 7px; accent-color: #0b70d4; cursor: pointer; } .range-labels { display: flex; justify-content: space-between; color: #7892ad; font-size: 10px; } .notes-field { margin-top: 18px; } .notes-field textarea { resize: vertical; }
-    @media (max-width: 780px) { .app-shell { display: block; } .dashboard { padding: 20px 14px 30px; } .welcome-mark { display: none; } } @media (max-width: 620px) { .form-grid { grid-template-columns: 1fr; } .section-heading { align-items: flex-start; gap: 15px; flex-direction: column; } .order-form { padding: 22px 18px; } }
-</style>
-
-<style is:global>
-    body:has(#reporte-taller) { background: #fff; }
-    body:has(#reporte-taller) .app-shell { background: #fff; color: #102548; }
-    body:has(#reporte-taller) .app-shell > aside { border-color: #d8e0ec !important; background: #fff !important; color: #102548; }
-    body:has(#reporte-taller) .app-shell > aside > div:first-child { border-color: #e3e8f0 !important; }
-    body:has(#reporte-taller) .app-shell > aside a span { background: #fff !important; color: #243b63 !important; }
-    body:has(#reporte-taller) .app-shell > aside a i { color: #075fbd !important; }
-    body:has(#reporte-taller) .dashboard { background: #f8fafc; }
-    body:has(#reporte-taller) .topbar { color: #536887; }
-    body:has(#reporte-taller) .back-link { color: #075fbd; }
-    body:has(#reporte-taller) .welcome-panel { border-color: #c5d0e0; background: #fff; box-shadow: 0 10px 26px #10254814; }
-    body:has(#reporte-taller) .welcome-panel::after { border-color: #075fbd; opacity: .14; }
-    body:has(#reporte-taller) .welcome-panel h1 { color: #102548; }
-    body:has(#reporte-taller) .welcome-panel .muted { color: #536887; }
-    body:has(#reporte-taller) .eyebrow { color: #075fbd; }
-    body:has(#reporte-taller) .surface { border-color: #d5deeb; background: #fff; box-shadow: 0 8px 22px #10254812; }
-    body:has(#reporte-taller) .section-caption { color: #617494; }
-    body:has(#reporte-taller) .primary-button { background: #075fbd; box-shadow: 0 8px 18px #075fbd3d; }
-    body:has(#reporte-taller) .primary-button:hover, body:has(#reporte-taller) .primary-button:focus-visible { background: #064b99; }
-    body:has(#reporte-taller) .workshop-card { border-color: #9bb2d2; background: #fff; color: #102548; box-shadow: 0 4px 12px #1025480d; }
-    body:has(#reporte-taller) .workshop-card:hover, body:has(#reporte-taller) .workshop-card:focus-visible { border-color: #075fbd; box-shadow: 0 12px 25px #1025481f; }
-    body:has(#reporte-taller) .workshop-icon { background: #075fbd; color: #fff; }
-    body:has(#reporte-taller) .workshop-type { background: #d9e7f8; color: #064b99; }
-    body:has(#reporte-taller) .workshop-card h3 { color: #102548; }
-    body:has(#reporte-taller) .workshop-specialty, body:has(#reporte-taller) .workshop-details, body:has(#reporte-taller) .workshop-load > span > span { color: #536887; }
-    body:has(#reporte-taller) .workshop-open-icon, body:has(#reporte-taller) .workshop-details i { color: #075fbd; }
-    body:has(#reporte-taller) .workshop-details { border-color: #dce4ef; }
-    body:has(#reporte-taller) .progress-summary strong, body:has(#reporte-taller) .workshop-load strong { color: #075fbd; }
-    body:has(#reporte-taller) .progress-track { background: #dce4ef; }
-    body:has(#reporte-taller) .progress-track > span { background: #075fbd; }
-    body:has(#reporte-taller) .report-empty { border-color: #9bb2d2; background: #fff; color: #536887; }
-    body:has(#reporte-taller) .report-empty p { color: #102548; }
-    body:has(#reporte-taller) .report-empty i { color: #075fbd; }
-    body:has(#reporte-taller) .progress-editor { border-color: #c5d0e0; background: #f8fafc; }
-    body:has(#reporte-taller) .progress-editor input[type="range"] { accent-color: #075fbd; }
-    body:has(#reporte-taller) .workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    body:has(#reporte-taller) .workshop-card { display: block; width: 100%; padding: 20px; border: 1px solid #9bb2d2; border-radius: 10px; font: inherit; text-align: left; cursor: pointer; }
-    body:has(#reporte-taller) .workshop-card-heading, body:has(#reporte-taller) .workshop-card-title { display: flex; align-items: center; justify-content: space-between; }
-    body:has(#reporte-taller) .workshop-card-heading { margin-bottom: 17px; }
-    body:has(#reporte-taller) .workshop-icon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 8px; font-size: 16px; }
-    body:has(#reporte-taller) .workshop-type { padding: 5px 8px; border-radius: 5px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-    body:has(#reporte-taller) .workshop-card-title { align-items: flex-start; gap: 12px; min-height: 42px; }
-    body:has(#reporte-taller) .workshop-card h3 { margin: 0 0 5px; font-size: 17px; }
-    body:has(#reporte-taller) .workshop-specialty { display: block; font-size: 12px; }
-    body:has(#reporte-taller) .workshop-open-icon { margin-top: 3px; font-size: 13px; }
-    body:has(#reporte-taller) .workshop-details { display: grid; gap: 6px; margin-top: 16px; padding: 12px 0; border-top: 1px solid #dce4ef; border-bottom: 1px solid #dce4ef; font-size: 11px; }
-    body:has(#reporte-taller) .workshop-details i { width: 14px; }
-    body:has(#reporte-taller) .progress-summary { display: block; margin-top: 15px; }
-    body:has(#reporte-taller) .progress-summary > span:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-    body:has(#reporte-taller) .progress-summary strong { font-size: 20px; }
-    body:has(#reporte-taller) .progress-summary > span:first-child > span { font-size: 10px; text-align: right; }
-    body:has(#reporte-taller) .progress-track { display: block; height: 7px; margin-top: 8px; overflow: hidden; border-radius: 6px; }
-    body:has(#reporte-taller) .progress-track > span { display: block; height: 100%; border-radius: inherit; }
-    body:has(#reporte-taller) .workshop-load { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 17px; }
-    body:has(#reporte-taller) .workshop-load > span { display: flex; flex-direction: column; gap: 3px; }
-    body:has(#reporte-taller) .workshop-load strong { font-size: 17px; }
-    body:has(#reporte-taller) .workshop-load > span > span { font-size: 10px; line-height: 1.2; }
-</style>
-
-<style is:global>
-    body:has(#reporte-taller) { background: #071a3d; }
-    body:has(#reporte-taller) .app-shell { background: #071a3d; color: #f7fbff; }
-    body:has(#reporte-taller) .app-shell > aside { border-color: #17366f !important; background: #061536 !important; color: #fff; }
-    body:has(#reporte-taller) .app-shell > aside > div:first-child { border-color: #17366f !important; }
-    body:has(#reporte-taller) .app-shell > aside a span { background: #0a2050 !important; color: #dceaff !important; }
-    body:has(#reporte-taller) .app-shell > aside a i { color: #63b7ff !important; }
-    body:has(#reporte-taller) .dashboard { background: #071a3d; }
-    body:has(#reporte-taller) .topbar { color: #a8bce0; }
-    body:has(#reporte-taller) .back-link { color: #52b2ff; }
-    body:has(#reporte-taller) .status-dot { background: #2dd4a0; box-shadow: 0 0 0 4px #123f61; }
-    body:has(#reporte-taller) .welcome-panel { border-color: #1c5fbe; background: linear-gradient(115deg, #0b2b68, #075bc4); box-shadow: 0 12px 30px #020b20aa; }
-    body:has(#reporte-taller) .welcome-panel::after { border-color: #2588e8; opacity: .5; }
-    body:has(#reporte-taller) .welcome-panel h1, body:has(#reporte-taller) .welcome-panel .muted { color: #fff; }
-    body:has(#reporte-taller) .eyebrow { color: #57b5ff; }
-    body:has(#reporte-taller) .surface { border-color: #173d7a; background: #fff; box-shadow: 0 10px 26px #020b204d; }
-    body:has(#reporte-taller) .section-caption { color: #58739e; }
-    body:has(#reporte-taller) .primary-button { background: #0868d5; box-shadow: 0 8px 18px #031b4d66; }
-    body:has(#reporte-taller) .primary-button:hover, body:has(#reporte-taller) .primary-button:focus-visible { background: #0b82f5; }
-    body:has(#reporte-taller) .workshop-grid { display: grid; }
-    body:has(#reporte-taller) .workshop-card { display: block; width: 100%; padding: 20px; border: 1px solid #1c4b91; border-radius: 10px; background: #0b2b68; color: #fff; font: inherit; text-align: left; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
-    body:has(#reporte-taller) .workshop-card:hover, body:has(#reporte-taller) .workshop-card:focus-visible { border-color: #3aa9ff; box-shadow: 0 12px 25px #020b205c; outline: none; transform: translateY(-3px); }
-    body:has(#reporte-taller) .workshop-icon { background: #0d65ca; color: #fff; }
-    body:has(#reporte-taller) .workshop-type { background: #174e99; color: #d8edff; }
-    body:has(#reporte-taller) .workshop-card h3 { color: #fff; }
-    body:has(#reporte-taller) .workshop-specialty, body:has(#reporte-taller) .workshop-details, body:has(#reporte-taller) .workshop-load > span > span { color: #a9bee2; }
-    body:has(#reporte-taller) .workshop-open-icon, body:has(#reporte-taller) .workshop-details i { color: #55b4ff; }
-    body:has(#reporte-taller) .workshop-details { border-color: #1b4b91; }
-    body:has(#reporte-taller) .progress-summary strong, body:has(#reporte-taller) .workshop-load strong { color: #5bbaff; }
-    body:has(#reporte-taller) .progress-track { background: #163e7b; }
-    body:has(#reporte-taller) .progress-track > span { background: #2ba5ff; }
-    body:has(#reporte-taller) .report-empty { border-color: #2c68b3; background: #0b2b68; color: #b8cbea; }
-    body:has(#reporte-taller) .report-empty p { color: #fff; }
-    body:has(#reporte-taller) .report-empty i { color: #52b2ff; }
-    body:has(#reporte-taller) .workshop-dialog { color: #102f56; }
-    body:has(#reporte-taller) .form-grid input, body:has(#reporte-taller) .form-grid select, body:has(#reporte-taller) .notes-field textarea { border-color: #7295c4; }
-    body:has(#reporte-taller) .progress-editor { border-color: #1c4b91; background: #edf5ff; }
-    body:has(#reporte-taller) .progress-editor input[type="range"] { accent-color: #0868d5; }
-</style>
-
-<style is:global>
-    body:has(#reporte-taller), body:has(#reporte-taller) .app-shell { background: #fff; }
-    body:has(#reporte-taller) .app-shell > aside { border-color: #d8e0ec !important; background: #fff !important; color: #102548; }
-    body:has(#reporte-taller) .app-shell > aside > div:first-child { border-color: #e3e8f0 !important; }
-    body:has(#reporte-taller) .app-shell > aside a span { background: #fff !important; color: #243b63 !important; }
-    body:has(#reporte-taller) .app-shell > aside a i { color: #075fbd !important; }
-    body:has(#reporte-taller) .dashboard { background: #f8fafc; }
-    body:has(#reporte-taller) .topbar { color: #536887; }
-    body:has(#reporte-taller) .back-link { color: #075fbd; }
-    body:has(#reporte-taller) .welcome-panel { border-color: #c5d0e0; background: #fff; box-shadow: 0 10px 26px #10254814; }
-    body:has(#reporte-taller) .welcome-panel::after { border-color: #075fbd; opacity: .14; }
-    body:has(#reporte-taller) .welcome-panel h1 { color: #102548; }
-    body:has(#reporte-taller) .welcome-panel .muted { color: #536887; }
-    body:has(#reporte-taller) .eyebrow { color: #075fbd; }
-    body:has(#reporte-taller) .surface { border-color: #d5deeb; background: #fff; box-shadow: 0 8px 22px #10254812; }
-    body:has(#reporte-taller) .primary-button { background: #075fbd; }
-    body:has(#reporte-taller) .workshop-card { border-color: #9bb2d2; background: #fff; color: #102548; box-shadow: 0 4px 12px #1025480d; }
-    body:has(#reporte-taller) .workshop-card:hover, body:has(#reporte-taller) .workshop-card:focus-visible { border-color: #075fbd; box-shadow: 0 12px 25px #1025481f; }
-    body:has(#reporte-taller) .workshop-icon { background: #075fbd; color: #fff; }
-    body:has(#reporte-taller) .workshop-type { background: #d9e7f8; color: #064b99; }
-    body:has(#reporte-taller) .workshop-card h3 { color: #102548; }
-    body:has(#reporte-taller) .workshop-specialty, body:has(#reporte-taller) .workshop-details, body:has(#reporte-taller) .workshop-load > span > span { color: #536887; }
-    body:has(#reporte-taller) .workshop-open-icon, body:has(#reporte-taller) .workshop-details i { color: #075fbd; }
-    body:has(#reporte-taller) .workshop-details { border-color: #dce4ef; }
-    body:has(#reporte-taller) .progress-summary strong, body:has(#reporte-taller) .workshop-load strong { color: #075fbd; }
-    body:has(#reporte-taller) .progress-track { background: #dce4ef; }
-    body:has(#reporte-taller) .progress-track > span { background: #075fbd; }
-    body:has(#reporte-taller) .report-empty { border-color: #9bb2d2; background: #fff; color: #536887; }
-    body:has(#reporte-taller) .report-empty p { color: #102548; }
-    body:has(#reporte-taller) .report-empty i { color: #075fbd; }
-    body:has(#reporte-taller) .progress-editor { border-color: #c5d0e0; background: #f8fafc; }
-    body:has(#reporte-taller) .progress-editor input[type="range"] { accent-color: #075fbd; }
-    body:has(#reporte-taller) .dialog-actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 28px; padding-top: 20px; border-top: 1px solid #e0e7f0; }
-    body:has(#reporte-taller) .dialog-actions .primary-button, body:has(#reporte-taller) .dialog-actions .secondary-button { min-width: 142px; text-align: center; }
-    body:has(#reporte-taller) .dialog-actions .secondary-button { color: #075fbd; border-color: #9bb2d2; font-weight: 700; }
-    body:has(#reporte-taller) .dialog-actions .secondary-button:hover { border-color: #075fbd; background: #f1f6fc; }
-    body:has(#reporte-taller) .welcome-panel { min-height: 190px; padding: 38px 42px; overflow: hidden; }
-    body:has(#reporte-taller) .welcome-panel::before { position: absolute; right: 17%; bottom: -92px; width: 270px; height: 190px; border: 24px solid #f1b72d; border-radius: 50%; content: ""; opacity: .65; transform: rotate(14deg); }
-    body:has(#reporte-taller) .welcome-panel::after { right: 30px; top: -105px; width: 360px; height: 300px; border-width: 28px; border-color: #075fbd; opacity: .16; }
-    body:has(#reporte-taller) .welcome-mark { width: 76px; height: 76px; margin-right: 82px; border-radius: 14px; background: #075fbd; box-shadow: 0 14px 24px #075fbd52; transform: rotate(-6deg); }
-    body:has(#reporte-taller) .welcome-mark::after { position: absolute; width: 15px; height: 15px; border-radius: 50%; background: #f1b72d; content: ""; transform: translate(28px, -30px); }
-    body:has(#reporte-taller) .report-panel { position: relative; }
-    body:has(#reporte-taller) .report-panel::before { position: absolute; top: 0; right: 28px; left: 28px; height: 4px; border-radius: 0 0 5px 5px; background: linear-gradient(90deg, #075fbd 0 62%, #f1b72d 62% 78%, #16a878 78%); content: ""; }
-    body:has(#reporte-taller) .workshop-icon { background: #075fbd; box-shadow: 0 5px 12px #075fbd3d; }
-    body:has(#reporte-taller) .workshop-type { border: 1px solid #b7d0ed; }
-    body:has(#reporte-taller) .progress-track > span { background: linear-gradient(90deg, #075fbd, #16a878); }
-    body:has(#reporte-taller) .workshop-load > span:nth-child(2) strong { color: #c27d00; }
-    body:has(#reporte-taller) .workshop-load > span:nth-child(3) strong { color: #16805f; }
-    @media (max-width: 620px) {
-        body:has(#reporte-taller) .dialog-actions { align-items: stretch; flex-direction: column-reverse; }
-        body:has(#reporte-taller) .dialog-actions .primary-button, body:has(#reporte-taller) .dialog-actions .secondary-button { width: 100%; }
-        body:has(#reporte-taller) .welcome-panel { padding: 28px 24px; }
-    }
+    dialog::backdrop { background: rgb(9 39 72 / 65%); backdrop-filter: blur(4px); }
 </style>

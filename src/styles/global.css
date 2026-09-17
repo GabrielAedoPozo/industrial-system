@@ -1,1 +1,14 @@
 @import "tailwindcss";
+@import "@fontsource/onest/400.css";
+@import "@fontsource/onest/500.css";
+@import "@fontsource/onest/600.css";
+@import "@fontsource/onest/700.css";
+
+@theme {
+	--font-sans: "Onest", sans-serif;
+}
+
+@layer utilities {
+	.font-bold { font-weight: 500; }
+	.font-extrabold { font-weight: 600; }
+}
