@@ -37,17 +37,24 @@ const populateWorkshopSelect = (select) => {
 	select.innerHTML = `<option value="">Selecciona un taller</option>${workshopOptions}`;
 };
 
-/** Pinta el resumen de la orden guardada en el panel principal. */
-const renderOrder = (order) => {
+/** Pinta todas las órdenes guardadas en el panel principal. */
+const renderOrders = (orders) => {
 	const emptyTable = document.querySelector('.empty-table');
-	const ordersCount = document.querySelector('.metric-card strong');
 	if (!emptyTable) return;
 
-	const completedStages = ['patternmaking', 'sewing', 'finishing'].filter((stage) => order[stage]).length;
-	const assignedWorkshop = readList('workshops').find((workshop) => workshop.id === order.workshopId);
+	if (!orders.length) {
+		emptyTable.className = 'empty-table flex min-h-80 flex-col items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50 text-center';
+		emptyTable.innerHTML = '<div class="mb-4 grid size-14 place-items-center rounded-xl bg-blue-50 text-2xl text-blue-400"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div><h3 class="mb-1 text-sm font-medium text-slate-900">Aún no hay órdenes de producción</h3><p class="text-sm text-slate-400">Cuando registres una orden, su avance aparecerá aquí.</p>';
+		return;
+	}
+
+	const workshopList = readList('workshops');
 	emptyTable.classList.add('text-left', 'items-stretch', 'justify-start', 'p-6', 'border-solid');
-	emptyTable.innerHTML = `<div class="flex items-start justify-between gap-6"><div><span class="mb-2 inline-block text-xs font-extrabold tracking-wider text-blue-700">${order.orderNumber}</span><h3 class="mb-2 text-xl font-bold text-slate-900">${order.garmentType} · ${order.model}</h3><p class="m-0 text-sm text-slate-500">${order.fabricType} · ${order.quantity} unidades · Curva: ${order.curve}</p></div><span class="shrink-0 rounded-md bg-blue-50 px-3 py-2 text-xs font-extrabold text-blue-700">${completedStages}/3 etapas</span></div><div class="my-6 h-2 overflow-hidden rounded-lg bg-slate-200"><span class="block h-full rounded-lg bg-linear-to-r from-blue-700 to-emerald-500" style="width: ${(completedStages / 3) * 100}%"></span></div><div class="grid grid-cols-2 gap-3 border-t border-slate-200 pt-4 text-xs text-slate-600"><span><i class="fa-solid fa-industry mr-2 w-4 text-center text-blue-700"></i> Taller: ${assignedWorkshop?.name || 'No asignado'}</span><span><i class="fa-solid fa-venus-mars mr-2 w-4 text-center text-blue-700"></i> Género: ${order.gender || 'Sin definir'}</span><span><i class="fa-solid fa-ruler-horizontal mr-2 w-4 text-center text-blue-700"></i> ${order.fabricWidth}</span><span><i class="fa-solid fa-layer-group mr-2 w-4 text-center text-blue-700"></i> ${order.composition}</span><span><i class="fa-solid fa-scissors mr-2 w-4 text-center text-blue-700"></i> Rizado: ${order.gathering || 'Pendiente'}</span></div><button class="edit-order-button mt-6 self-end rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700" type="button"><i class="fa-solid fa-pen-to-square mr-2"></i> Editar orden</button>`;
-	if (ordersCount) ordersCount.textContent = '1';
+	emptyTable.innerHTML = orders.map((order) => {
+		const completedStages = ['patternmaking', 'sewing', 'finishing'].filter((stage) => order[stage]).length;
+		const assignedWorkshop = workshopList.find((workshop) => workshop.id === order.workshopId);
+		return `<article class="border-b border-slate-200 pb-6 last:border-0 last:pb-0"><div class="flex items-start justify-between gap-6"><div><span class="mb-2 inline-block text-xs font-extrabold tracking-wider text-blue-700">${order.orderNumber}</span><h3 class="mb-2 text-xl font-bold text-slate-900">${order.garmentType} · ${order.model}</h3><p class="m-0 text-sm text-slate-500">${order.fabricType} · ${order.quantity} unidades · Curva: ${order.curve}</p></div><span class="shrink-0 rounded-md bg-blue-50 px-3 py-2 text-xs font-extrabold text-blue-700">${completedStages}/3 etapas</span></div><div class="my-6 h-2 overflow-hidden rounded-lg bg-slate-200"><span class="block h-full rounded-lg bg-linear-to-r from-blue-700 to-emerald-500" style="width: ${(completedStages / 3) * 100}%"></span></div><div class="grid grid-cols-2 gap-3 border-t border-slate-200 pt-4 text-xs text-slate-600"><span><i class="fa-solid fa-industry mr-2 w-4 text-center text-blue-700"></i> Taller: ${assignedWorkshop?.name || 'No asignado'}</span><span><i class="fa-solid fa-venus-mars mr-2 w-4 text-center text-blue-700"></i> Género: ${order.gender || 'Sin definir'}</span><span><i class="fa-solid fa-ruler-horizontal mr-2 w-4 text-center text-blue-700"></i> ${order.fabricWidth}</span><span><i class="fa-solid fa-layer-group mr-2 w-4 text-center text-blue-700"></i> ${order.composition}</span><span><i class="fa-solid fa-scissors mr-2 w-4 text-center text-blue-700"></i> Rizado: ${order.gathering || 'Pendiente'}</span></div><button class="edit-order-button mt-6 self-end rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700" data-order-number="${order.orderNumber}" type="button"><i class="fa-solid fa-pen-to-square mr-2"></i> Editar orden</button></article>`;
+	}).join('');
 };
 
 /** Configura el formulario y los eventos de creación de órdenes. */
@@ -74,7 +81,8 @@ const initializeOrderPage = () => {
 		});
 		const isDenim = String(order.fabricType || '').toLowerCase().includes('denim');
 		washField?.classList.toggle('hidden', !isDenim);
-		washField?.querySelector('input').toggleAttribute('required', isDenim);
+		washField?.querySelector('input').toggleAttribute('required', isDenim
+		);
 	};
 
 	const openOrderDialog = (order = null) => {
@@ -88,8 +96,9 @@ const initializeOrderPage = () => {
 
 	document.querySelectorAll('.new-order-button').forEach((button) => button.addEventListener('click', () => openOrderDialog()));
 	emptyTable?.addEventListener('click', (event) => {
-		if (!event.target.closest('.edit-order-button')) return;
-		const currentOrder = JSON.parse(localStorage.getItem('productionOrder') || 'null');
+		const editButton = event.target.closest('.edit-order-button');
+		if (!editButton) return;
+		const currentOrder = readList('productionOrders').find((order) => order.orderNumber === editButton.dataset.orderNumber);
 		if (currentOrder) openOrderDialog(currentOrder);
 	});
 	fabricInput?.addEventListener('input', (event) => {
@@ -111,15 +120,20 @@ const initializeOrderPage = () => {
 		const savedOrders = readList('productionOrders').filter((savedOrder) => savedOrder.orderNumber !== editingOrderNumber && savedOrder.orderNumber !== order.orderNumber);
 		writeList('productionOrders', [...savedOrders, order]);
 		localStorage.setItem('productionOrder', JSON.stringify(order));
-		renderOrder(order);
+		renderOrders([...savedOrders, order]);
 		dialog.close();
 		form.reset();
 		washField?.classList.add('hidden');
 		editingOrderNumber = null;
 	});
 
-	const savedOrder = localStorage.getItem('productionOrder');
-	if (savedOrder) renderOrder(JSON.parse(savedOrder));
+	const savedOrders = readList('productionOrders');
+	const legacyOrder = localStorage.getItem('productionOrder');
+	if (!savedOrders.length && legacyOrder) {
+		savedOrders.push(JSON.parse(legacyOrder));
+		writeList('productionOrders', savedOrders);
+	}
+	renderOrders(savedOrders);
 	populateWorkshopSelect(workshopSelect);
 };
 
@@ -134,7 +148,7 @@ const renderWorkshops = () => {
 		const assignedOrders = productionOrders.filter((order) => order.workshopId === workshop.id);
 		const units = assignedOrders.reduce((total, order) => total + Number(order.quantity || 0), 0);
 		const progress = Number(workshop.progress || 0);
-		return `<div class="workshop-card block w-full rounded-lg border border-blue-200 bg-white p-5 text-left text-inherit shadow-sm transition hover:-translate-y-1 hover:border-blue-600 hover:shadow-lg" data-workshop-id="${workshop.id}"><div class="mb-4 flex items-center justify-between"><span class="grid size-10 place-items-center rounded-lg bg-blue-700 text-base text-white"><i class="fa-solid fa-industry"></i></span><span class="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-extrabold uppercase text-blue-800">${workshop.type}</span></div><div class="flex min-h-11 items-start justify-between gap-3"><span><h3 class="mb-1 text-[17px] font-bold text-slate-900">${workshop.name}</h3><span class="block text-xs text-slate-600">${workshop.specialty}</span></span><button class="edit-workshop-button rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-500 hover:text-blue-700" type="button" data-edit-workshop-id="${workshop.id}" aria-label="Editar perfil de ${workshop.name}"><i class="fa-solid fa-pen"></i></button></div><div class="mt-4 grid gap-1.5 border-y border-slate-200 py-3 text-[11px] text-slate-600"><span><i class="fa-solid fa-user mr-2 w-3.5 text-blue-700"></i> ${workshop.contact}</span><span><i class="fa-solid fa-phone mr-2 w-3.5 text-blue-700"></i> ${workshop.phone || 'Sin teléfono'}</span></div><div class="mt-4 block"><div class="flex items-baseline justify-between gap-2"><strong class="text-xl text-blue-700">${progress}%</strong><span class="text-right text-[10px] text-slate-600">avance del procedimiento</span></div><div class="mt-2 block h-2 overflow-hidden rounded-md bg-slate-200"><span class="block h-full rounded-md bg-linear-to-r from-blue-700 to-emerald-500" style="width: ${progress}%"></span></div></div><div class="mt-4 grid grid-cols-3 gap-2"><span class="flex flex-col gap-1"><strong class="text-lg text-blue-700">${assignedOrders.length}</strong><span class="text-[10px] leading-tight text-slate-600">órdenes asignadas</span></span><span class="flex flex-col gap-1"><strong class="text-lg text-amber-700">${units}</strong><span class="text-[10px] leading-tight text-slate-600">prendas</span></span><span class="flex flex-col gap-1"><strong class="text-lg text-emerald-700">${workshop.capacity}</strong><span class="text-[10px] leading-tight text-slate-600">capacidad mensual</span></span></div><button class="mt-4 w-full rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700" type="button" data-open-workshop-id="${workshop.id}">Ver avance y pago</button></div>`;
+		return `<div class="workshop-card block w-full rounded-lg border border-blue-200 bg-white p-5 text-left text-inherit shadow-sm transition hover:-translate-y-1 hover:border-blue-600 hover:shadow-lg" data-workshop-id="${workshop.id}"><div class="mb-4 flex items-center justify-between"><span class="grid size-10 place-items-center rounded-lg bg-blue-700 text-base text-white"><i class="fa-solid fa-industry"></i></span><span class="rounded-md bg-blue-50 px-2 py-1 text-xs font-extrabold uppercase text-blue-800">${workshop.type}</span></div><div class="flex min-h-11 items-start justify-between gap-3"><span><h3 class="mb-1 text-lg font-bold text-slate-900">${workshop.name}</h3><span class="block text-xs text-slate-600">${workshop.specialty}</span></span><button class="edit-workshop-button rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-500 hover:text-blue-700" type="button" data-edit-workshop-id="${workshop.id}" aria-label="Editar perfil de ${workshop.name}"><i class="fa-solid fa-pen"></i></button></div><div class="mt-4 grid gap-1.5 border-y border-slate-200 py-3 text-xs text-slate-600"><span><i class="fa-solid fa-user mr-2 w-3.5 text-blue-700"></i> ${workshop.contact}</span><span><i class="fa-solid fa-phone mr-2 w-3.5 text-blue-700"></i> ${workshop.phone || 'Sin teléfono'}</span></div><div class="mt-4 block"><div class="flex items-baseline justify-between gap-2"><strong class="text-xl text-blue-700">${progress}%</strong><span class="text-right text-xs text-slate-600">avance del procedimiento</span></div><div class="mt-2 block h-2 overflow-hidden rounded-md bg-slate-200"><span class="block h-full rounded-md bg-linear-to-r from-blue-700 to-emerald-500" style="width: ${progress}%"></span></div></div><div class="mt-4 grid grid-cols-3 gap-2"><span class="flex flex-col gap-1"><strong class="text-lg text-blue-700">${assignedOrders.length}</strong><span class="text-xs leading-tight text-slate-600">órdenes asignadas</span></span><span class="flex flex-col gap-1"><strong class="text-lg text-amber-700">${units}</strong><span class="text-xs leading-tight text-slate-600">prendas</span></span><span class="flex flex-col gap-1"><strong class="text-lg text-emerald-700">${workshop.capacity}</strong><span class="text-xs leading-tight text-slate-600">capacidad mensual</span></span></div><button class="mt-4 w-full rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700" type="button" data-open-workshop-id="${workshop.id}">Ver avance y pago</button></div>`;
 	}).join('') : '<div class="report-empty"><i class="fa-solid fa-screwdriver-wrench"></i><p>Aún no hay perfiles de talleres.</p><span>Crea un perfil para asignar órdenes y consultar su carga de trabajo.</span></div>';
 
 	workshopGrid.querySelectorAll('[data-open-workshop-id]').forEach((button) => button.addEventListener('click', () => openWorkshopDetail(button.dataset.openWorkshopId)));
